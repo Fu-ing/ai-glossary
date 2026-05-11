@@ -178,15 +178,52 @@
   }
   .stats {
     text-align: center;
-    padding: 20px;
-    color: #666;
-    font-size: 13px;
+    padding: 30px 20px;
+    color: #888;
+    font-size: 14px;
+    background: linear-gradient(180deg, transparent, #1a1a2e 50%);
+    margin-top: 20px;
+  }
+  .stats strong {
+    color: #e94560;
+    font-size: 18px;
+  }
+  .stats kbd {
+    background: #333;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #aaa;
   }
   @media (max-width: 600px) {
     .header h1 { font-size: 22px; }
     .search-box input { width: 200px; }
     .nav { top: 100px; }
     .term-name { font-size: 17px; }
+  }
+  /* 滚动条美化 */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #1a1a2e; }
+  ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555; }
+  /* 卡片悬浮效果增强 */
+  .term-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .term-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e94560, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .term-card:hover::before {
+    opacity: 1;
   }
 </style>
 </head>
@@ -1206,22 +1243,6 @@
 <div class="term-explain"><span class="label">🗣️ 通俗：</span>让电脑自动操作浏览器的工具。自动打开网页、点击按钮、填写表单、截图。你要自动化闲鱼上架，就得用这类工具。Playwright是新一代，Selenium是老牌。</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="stats">
-  📊 本文档共收录 <strong id="termCount">0</strong> 个名词 | 按 <kbd>Ctrl+F</kbd> 或使用顶部搜索框查找
-</div>
-
-<script>
-  // 统计词条数
-  const cards = document.querySelectorAll('.term-card');
-  document.getElementById('termCount').textContent = cards.length;
-
-  // 搜索功能
-  function filterTerms() {
-
 <div class="term-card" data-keywords="seed 种子 随机种子 复现">
 <div class="term-name">种子 <span class="en">Seed</span> <span class="tag tag-concept">概念</span></div>
 <div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Seed = 种子。计算机中"随机种子"决定随机数的起点</span></div>
@@ -1257,30 +1278,51 @@
 <div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Positive = 正面的（想要的），Negative = 负面的（不想要的）</span></div>
 <div class="term-explain"><span class="label">🗣️ 通俗：</span>正向提示词 = "我要什么"（如：一个美丽的花园），反向提示词 = "我不要什么"（如：没有人、没有垃圾、不模糊）。反向提示词就像"忌口"——告诉厨师你不吃什么，避免踩雷。</div>
 </div>
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    cards.forEach(card => {
-      const name = card.querySelector('.term-name').textContent.toLowerCase();
-      const keywords = card.dataset.keywords ? card.dataset.keywords.toLowerCase() : '';
-      const etymology = card.querySelector('.term-etymology') ? card.querySelector('.term-etymology').textContent.toLowerCase() : '';
-      const explain = card.querySelector('.term-explain') ? card.querySelector('.term-explain').textContent.toLowerCase() : '';
-      const all = name + ' ' + keywords + ' ' + etymology + ' ' + explain;
-      card.style.display = all.includes(query) ? '' : 'none';
-    });
-    // 隐藏空分类
-    document.querySelectorAll('.category').forEach(cat => {
-      const visible = cat.querySelectorAll('.term-card[style=""], .term-card:not([style])');
-      cat.style.display = visible.length > 0 ? '' : 'none';
-    });
-  }
 
-  // 导航高亮
-  const navLinks = document.querySelectorAll('.nav a');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function() {
-      navLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-    });
+</div>
+
+<div class="stats">
+  📊 本文收录 <strong id="termCount">0</strong> 个AI名词 | 🔍 搜索或按 <kbd>Ctrl+F</kbd> 查找
+</div>
+
+<script>
+// 统计词条数
+const cards = document.querySelectorAll('.term-card');
+document.getElementById('termCount').textContent = cards.length;
+
+// 搜索功能
+function filterTerms() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  cards.forEach(card => {
+    const name = card.querySelector('.term-name').textContent.toLowerCase();
+    const keywords = card.dataset.keywords ? card.dataset.keywords.toLowerCase() : '';
+    const etymology = card.querySelector('.term-etymology') ? card.querySelector('.term-etymology').textContent.toLowerCase() : '';
+    const explain = card.querySelector('.term-explain') ? card.querySelector('.term-explain').textContent.toLowerCase() : '';
+    const all = name + ' ' + keywords + ' ' + etymology + ' ' + explain;
+    card.style.display = all.includes(query) ? '' : 'none';
   });
+  // 隐藏空分类
+  document.querySelectorAll('.category').forEach(cat => {
+    const visible = cat.querySelectorAll('.term-card:not([style]), .term-card[style=""]');
+    cat.style.display = visible.length > 0 ? '' : 'none';
+  });
+}
+
+// 回车搜索
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    filterTerms();
+  }
+});
+
+// 导航高亮
+const navLinks = document.querySelectorAll('.nav a');
+navLinks.forEach(link => {
+  link.addEventListener('click', function() {
+    navLinks.forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
 </script>
 
 <!-- 页脚二维码 -->
