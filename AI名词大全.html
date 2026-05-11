@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI圈子名词大全</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #0f0f1a;
+    color: #e0e0e0;
+    line-height: 1.8;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 2px solid #0f3460;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 {
+    font-size: 28px;
+    color: #e94560;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: #aaa;
+    font-size: 14px;
+  }
+  .search-box {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .search-box input {
+    width: 300px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    font-size: 14px;
+    outline: none;
+  }
+  .search-box input:focus {
+    border-color: #e94560;
+  }
+  .nav {
+    background: #1a1a2e;
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    position: sticky;
+    top: 110px;
+    z-index: 99;
+    border-bottom: 1px solid #222;
+  }
+  .nav a {
+    color: #aaa;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    border: 1px solid #333;
+    transition: all 0.2s;
+  }
+  .nav a:hover, .nav a.active {
+    color: #e94560;
+    border-color: #e94560;
+    background: rgba(233,69,96,0.1);
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .category {
+    margin-bottom: 40px;
+  }
+  .category-title {
+    font-size: 22px;
+    color: #e94560;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e94560;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .category-title .emoji {
+    font-size: 24px;
+  }
+  .term-card {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid #222;
+    transition: all 0.2s;
+  }
+  .term-card:hover {
+    border-color: #e94560;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(233,69,96,0.1);
+  }
+  .term-name {
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .term-name .en {
+    font-size: 14px;
+    color: #888;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: normal;
+  }
+  .tag-concept { background: rgba(0,150,255,0.2); color: #4da6ff; }
+  .tag-model { background: rgba(255,165,0,0.2); color: #ffa500; }
+  .tag-tool { background: rgba(0,200,100,0.2); color: #00c864; }
+  .tag-platform { background: rgba(200,0,200,0.2); color: #c800c8; }
+  .tag-method { background: rgba(255,69,96,0.2); color: #e94560; }
+  .tag-protocol { background: rgba(255,215,0,0.2); color: #ffd700; }
+  .term-etymology {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 3px solid #0f3460;
+  }
+  .term-etymology .label {
+    color: #4da6ff;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .term-etymology .content {
+    color: #bbb;
+    font-size: 13px;
+  }
+  .term-explain {
+    margin-top: 10px;
+    color: #ddd;
+    font-size: 14px;
+  }
+  .term-explain .label {
+    color: #e94560;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .term-example {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(233,69,96,0.05);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #aaa;
+  }
+  .term-example .label {
+    color: #00c864;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .stats {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 13px;
+  }
+  @media (max-width: 600px) {
+    .header h1 { font-size: 22px; }
+    .search-box input { width: 200px; }
+    .nav { top: 100px; }
+    .term-name { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧠 AI圈子名词大全</h1>
+  <p>从词源到人话，一份搞懂AI黑话</p>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索名词..." oninput="filterTerms()">
+  </div>
+</div>
+
+<div class="nav" id="nav">
+  <a href="#cat1">🔤 基础概念</a>
+  <a href="#cat2">🤖 模型家族</a>
+  <a href="#cat3">🛠️ 工具&amp;平台</a>
+  <a href="#cat4">⚙️ 技术方法</a>
+  <a href="#cat5">📡 协议&amp;接口</a>
+  <a href="#cat6">📦 部署&amp;运维</a>
+  <a href="#cat7">💼 商业&amp;应用</a>
+  <a href="#cat8">🎨 多模态&amp;创作</a>
+</div>
+
+<div class="container">
+
+<!-- ========== 1. 基础概念 ========== -->
+<div class="category" id="cat1">
+<div class="category-title"><span class="emoji">🔤</span> 一、基础概念</div>
+
+<div class="term-card" data-keywords="AI artificial intelligence 人工智能">
+<div class="term-name">AI <span class="en">Artificial Intelligence</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Artificial = 人造的，Intelligence = 智能。1956年达特茅斯会议首次提出，指"让机器表现出人类智能"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>就是让电脑模仿人脑——能看、能听、能说、能思考。你手机里的语音助手、刷脸解锁、抖音推荐都是AI。</div>
+</div>
+
+<div class="term-card" data-keywords="AGI 通用人工智能 artificial general intelligence">
+<div class="term-name">AGI <span class="en">Artificial General Intelligence</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">General = 通用的。指能做任何人类能做的智能任务的AI，不是只会下棋或只会画画的那种"偏科AI"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>现在的AI都是"专才"（只会一件事），AGI是"全才"（啥都会）。还没实现，是AI圈终极目标。</div>
+<div class="term-example"><span class="label">💡 例子：</span>ChatGPT会聊天但不会开飞机 → AGI是既会聊天又会开飞机还会做饭的AI</div>
+</div>
+
+<div class="term-card" data-keywords="LLM 大模型 大语言模型 large language model">
+<div class="term-name">LLM <span class="en">Large Language Model</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Large = 大规模，Language = 语言，Model = 模型。用海量文字训练出来的AI模型，参数量达到数十亿甚至万亿级</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>你可以理解为"读了全互联网的书，然后学会说话的AI"。ChatGPT、文心一言、通义千问都是LLM。参数量越大 = "读的书越多" = 越聪明。</div>
+</div>
+
+<div class="term-card" data-keywords="ML 机器学习 machine learning">
+<div class="term-name">ML <span class="en">Machine Learning</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Machine = 机器，Learning = 学习。让机器从数据中"学习规律"，而不是靠人手写规则</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>传统编程是"人告诉电脑怎么做"，机器学习是"给电脑看1000个例子，它自己悟出怎么做"。就像教小孩认猫：不用描述猫的特征，给他看1000张猫的照片，他自己就会认了。</div>
+</div>
+
+<div class="term-card" data-keywords="DL 深度学习 deep learning">
+<div class="term-name">DL <span class="en">Deep Learning</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Deep = 深的，指神经网络有很多层（很"深"）。Learning = 学习</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>机器学习的一种高级玩法。普通机器学习是人设计好"看什么特征"，深度学习是让AI自己发现特征。就像：普通ML = 你告诉它"猫有尖耳朵"，DL = 它自己发现"哦原来耳朵形状很重要"。</div>
+</div>
+
+<div class="term-card" data-keywords="NN 神经网络 neural network">
+<div class="term-name">神经网络 <span class="en">Neural Network</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Neural = 神经的，Network = 网络。模仿人脑神经元连接方式的计算模型</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>想象一张渔网，每个结 = 一个"小计算器"，数据从左边进去，经过层层网结的计算，从右边出来变成结果。网越大越密 = 越聪明。</div>
+</div>
+
+<div class="term-card" data-keywords="参数 parameter 模型参数">
+<div class="term-name">参数 <span class="en">Parameter</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">源自希腊语 parametron（旁侧测量），指模型内部可调整的数值</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>可以理解成AI的"脑细胞连接数"。7B = 70亿参数，175B = 1750亿参数。参数越多，AI越"聪明"，但也要越多算力。就像一个公司：7人小作坊 vs 17500人大厂。</div>
+</div>
+
+<div class="term-card" data-keywords="token 令牌 分词">
+<div class="term-name">Token <span class="en">Token</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">源自古英语 tacen（标志/记号），在AI中指文本的最小处理单位</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI不是按"字"来理解文字的，而是按"token"切分。一个token大约是0.75个中文字或0.25个英文词。就像你读书不是逐字看，而是按"词组"理解。</div>
+<div class="term-example"><span class="label">💡 例子：</span>"我喜欢吃苹果" → 可能被切成"我/喜欢/吃/苹果" = 4个token</div>
+</div>
+
+<div class="term-card" data-keywords="prompt 提示词 提示">
+<div class="term-name">Prompt <span class="en">Prompt</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">源自拉丁语 promptus（准备好的/迅速的），原意为"提示、催促"。在AI中指给模型的输入指令</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>你对AI说的话就是Prompt。你说"帮我写一首诗"，这句话就是Prompt。Prompt写得好 = AI回答质量高，就像你问老师问题，问得越清楚，回答越靠谱。</div>
+</div>
+
+<div class="term-card" data-keywords="hallucination 幻觉 胡说八道">
+<div class="term-name">幻觉 <span class="en">Hallucination</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Hallucination源自拉丁语 alucinari（在心中游荡/胡言乱语），医学上指"没有刺激却产生感知"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI一本正经地胡说八道。它不知道答案，但会编一个看起来很真的答案。就像考试不会做但写了满篇，看起来很专业但全错了。</div>
+<div class="term-example"><span class="label">💡 例子：</span>你问"林黛玉倒拔垂杨柳是真的吗"，AI可能说"是的"——这就是幻觉</div>
+</div>
+
+<div class="term-card" data-keywords="fine-tuning 微调 精调">
+<div class="term-name">微调 <span class="en">Fine-tuning</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Fine = 精细的，Tuning = 调校。就像调钢琴，先调大方向再精调每个音</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>大模型是"通才"，微调是让它在某个领域变"专才"。就像一个全科医生去进修变成眼科专家——基础知识都在，只是额外学了专业领域。</div>
+<div class="term-example"><span class="label">💡 例子：</span>通用GPT → 微调法律知识 → 变成法律AI助手</div>
+</div>
+
+<div class="term-card" data-keywords="RAG 检索增强生成 retrieval augmented generation">
+<div class="term-name">RAG <span class="en">Retrieval-Augmented Generation</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Retrieval = 检索/查找，Augmented = 增强，Generation = 生成。先查找资料再生成回答</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI回答问题前，先去你的资料库里搜一下，找到相关内容再回答。就像开卷考试——先翻书找答案，再用自己的话写出来。这样AI就不会胡编了。</div>
+</div>
+
+<div class="term-card" data-keywords="embedding 向量嵌入 表示">
+<div class="term-name">Embedding <span class="en">Embedding</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Embed = 嵌入/嵌入其中。把文字转换成数字向量，"嵌入"到数学空间中</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把文字变成一串数字，意思相近的文字数字也相近。就像把所有词放到一张地图上，"猫"和"狗"挨得近，"猫"和"汽车"离得远。这样AI就能用数学算出"意思的相似度"。</div>
+</div>
+
+<div class="term-card" data-keywords="agent 智能体 代理">
+<div class="term-name">Agent <span class="en">AI Agent</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Agent源自拉丁语 agere（行动/做），指"能自主行动的代理"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>普通AI是"你问它答"，Agent是"你给目标，它自己想办法完成"。就像：普通AI = 答题机器，Agent = 实习生——你只说"帮我订机票"，它自己去查航班、比价、下单。</div>
+</div>
+
+<div class="term-card" data-keywords="copilot 副驾驶 辅助">
+<div class="term-name">Copilot <span class="en">Copilot</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Co = 共同/辅助，Pilot = 驾驶员。航空术语中的"副驾驶"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI不是代替你，而是辅助你。你是主驾驶，AI是副驾驶帮你干活。GitHub Copilot帮你写代码，Microsoft Copilot帮你做PPT。</div>
+</div>
+
+<div class="term-card" data-keywords="context 上下文 语境">
+<div class="term-name">上下文 <span class="en">Context</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Context源自拉丁语 contextus（编织在一起），指"环绕某事物的背景"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI能"记住"的对话长度。Context Window越大，AI能记住的内容越多。就像一个人能同时看几页书：8K = 8页，128K = 128页，1M = 1000页。</div>
+</div>
+
+<div class="term-card" data-keywords="temperature 温度 随机性">
+<div class="term-name">Temperature <span class="en">Temperature</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Temperature = 温度。借用物理学中"温度越高粒子运动越随机"的概念</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>控制AI回答的"创意程度"。温度低 = 回答稳定靠谱（适合写代码），温度高 = 回答天马行空（适合写诗）。就像水龙头：冷水 = 稳定，热水 = 活跃。</div>
+</div>
+
+<div class="term-card" data-keywords="zero-shot few-shot 零样本 少样本">
+<div class="term-name">Zero-shot / Few-shot <span class="en">零样本/少样本学习</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Shot = 尝试/例子。Zero-shot = 零个例子，Few-shot = 几个例子</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Zero-shot = 不给例子直接让它做（"帮我翻译这句话"），Few-shot = 给几个例子再让它做（"这是3个翻译示例，照着翻译这句"）。就像：零样本 = 裸考，少样本 = 考前看了3道例题。</div>
+</div>
+
+<div class="term-card" data-keywords="inference 推理 推断">
+<div class="term-name">推理 <span class="en">Inference</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Inference源自拉丁语 inferre（引入/推断），指"从已知推导未知"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>训练 = 让AI学习（上学），推理 = 让AI干活（上班）。你在ChatGPT里打字提问，它回答的过程就叫推理。</div>
+</div>
+
+<div class="term-card" data-keywords="training 训练 预训练 pretrain">
+<div class="term-name">训练 / 预训练 <span class="en">Training / Pre-training</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Pre = 预先，Training = 训练。先大规模训练基础能力，再针对特定任务训练</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>预训练 = 上大学学通识课（啥都学一点），微调 = 上岗前培训（学专业技能）。所以流程是：预训练 → 微调 → 推理。</div>
+</div>
+
+<div class="term-card" data-keywords="alignment 对齐 价值观">
+<div class="term-name">对齐 <span class="en">Alignment</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Align = 对齐/使一致。让AI的行为和人类价值观保持一致</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让AI"听话"。未经对齐的AI可能教你造炸弹，对齐后的AI会拒绝。就像给AI装上"道德观"。</div>
+</div>
+
+<div class="term-card" data-keywords="RLHF 人类反馈强化学习 reinforcement learning">
+<div class="term-name">RLHF <span class="en">Reinforcement Learning from Human Feedback</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Reinforcement = 强化，Learning = 学习，Human Feedback = 人类反馈</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>训练AI的方法之一：AI回答问题 → 人类打分 → AI根据分数调整。就像训狗：做对了给零食，做错了训斥，慢慢就学会了。</div>
+</div>
+
+<div class="term-card" data-keywords="transformer 注意力机制 attention">
+<div class="term-name">Transformer <span class="en">Transformer</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Transform = 转换/变换。2017年Google论文"Attention Is All You Need"提出，彻底改变了NLP</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>当前所有主流大模型（GPT、文心、通义）的"大脑架构"。核心是"注意力机制"——AI读一句话时，会自动关注最重要的词。就像你读"猫坐在垫子上"，你的注意力主要在"猫"和"垫子"上，不在"在"上。</div>
+</div>
+
+<div class="term-card" data-keywords="GPT 生成式预训练 generate pre-trained transformer">
+<div class="term-name">GPT <span class="en">Generative Pre-trained Transformer</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Generative = 生成的，Pre-trained = 预训练的，Transformer = 变换器架构</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>三个词说明白：它是一个用Transformer架构、预先训练好、能生成新内容的AI。ChatGPT就是基于GPT模型做的聊天产品。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="ASI 超级智能 artificial superintelligence">
+<div class="term-name">ASI <span class="en">Artificial Superintelligence</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Artificial = 人造的，Super = 超级的，Intelligence = 智能。超越人类所有智能的AI</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AGI = 和人一样聪明，ASI = 比人聪明得多。就像蚂蚁看人类——ASI之于人类，如同人类之于蚂蚁。目前还是科幻级别，但很多人担心它出现后的安全问题。</div>
+</div>
+
+<div class="term-card" data-keywords="涌现 涌现能力 emergent abilities emergence">
+<div class="term-name">涌现能力 <span class="en">Emergent Abilities</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Emerge = 浮现/出现。源自物理学"涌现"概念——整体大于部分之和</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>模型大到一定程度，突然会做之前不会的事。就像一只蚂蚁不会建城堡，但100万只蚂蚁就能建出精密的蚁穴——"涌现"出个体不具备的能力。GPT-3不会做数学推理，GPT-4突然就会了，这就是涌现。</div>
+</div>
+
+<div class="term-card" data-keywords="缩放定律 scaling law 规模法则">
+<div class="term-name">缩放定律 <span class="en">Scaling Law</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Scaling = 缩放/规模化，Law = 定律。模型性能随规模增长的可预测规律</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>"大力出奇迹"的科学版本。OpenAI发现：模型参数越多、数据越多、算力越多，AI就越聪明，而且增长是可以预测的。就像烧水：火力越大水越热，温度可以提前算出来。这一定律也是"砸钱堆算力"路线的理论基础。</div>
+</div>
+
+<div class="term-card" data-keywords="注意力机制 attention mechanism self-attention 自注意力">
+<div class="term-name">注意力机制 <span class="en">Attention Mechanism</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Attention = 注意力。让AI学会"该关注哪里"的机制，是Transformer的核心</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI版的"划重点"。读一句话时，AI不是平均分配注意力，而是自动找出最重要的词。比如"小明喜欢吃苹果"，AI会重点关注"小明"和"苹果"，而不是"喜欢"和"吃"。这就是注意力机制。</div>
+</div>
+
+<div class="term-card" data-keywords="自回归 autoregressive 生成方式">
+<div class="term-name">自回归 <span class="en">Autoregressive</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Auto = 自我，Regressive = 回归。用自己之前的结果预测下一个结果</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI生成文字的方式：一个字一个字往后蹦，每次都是根据前面所有内容预测下一个字。就像写作文：先写第一个字→再基于第一个字写第二个字→再基于前两个字写第三个字……GPT就是这么工作的。</div>
+</div>
+
+<div class="term-card" data-keywords="过拟合 overfitting 欠拟合 underfitting 泛化 generalization">
+<div class="term-name">过拟合 / 欠拟合 <span class="en">Overfitting / Underfitting</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Over = 过度，Fitting = 拟合。Under = 不足。拟合 = 模型对训练数据的匹配程度</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>过拟合 = 死记硬背（考试题全对，换个题就不会了），欠拟合 = 啥也没学（连考试题都不会）。好的模型是"融会贯通"——既学会了规律，又能举一反三。这叫"泛化"能力。</div>
+</div>
+
+<div class="term-card" data-keywords="梯度下降 gradient descent 优化 学习率">
+<div class="term-name">梯度下降 <span class="en">Gradient Descent</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Gradient = 梯度/坡度，Descent = 下降。沿着坡度最陡的方向往下走，找到最低点</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI训练的核心算法。蒙着眼下山：用脚试哪边最陡，就往最陡的方向迈一步。一步一步往下走，最终走到谷底（最优解）。学习率 = 每步迈多大——太大容易冲过头，太小走太慢。</div>
+</div>
+
+<div class="term-card" data-keywords="损失函数 loss function 代价函数 cost function">
+<div class="term-name">损失函数 <span class="en">Loss Function</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Loss = 损失/误差，Function = 函数。衡量AI预测和真实答案之间差距的公式</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"考试评分标准"。AI预测的答案和正确答案差距多大？损失函数算这个差距。训练AI = 不断减少损失（让差距越来越小）。就像减肥：体重秤就是"损失函数"，目标是让数字越来越小。</div>
+</div>
+
+<div class="term-card" data-keywords="benchmark 基准测试 评测 排行榜">
+<div class="term-name">基准测试 <span class="en">Benchmark</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Bench = 长椅，Mark = 标记。原指工匠在长椅上刻标记作为标准，后指"标准测试"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"考试卷"。不同AI模型谁强谁弱？用同一套题考一遍，比分数。常见的有MMLU（综合知识）、HumanEval（编程）、GSM8K（数学）。AI公司发布新模型必晒Benchmark分数，就像手机发布会跑安兔兔。</div>
+</div>
+<!-- ========== 2. 模型家族 ========== -->
+<div class="category" id="cat2">
+<div class="category-title"><span class="emoji">🤖</span> 二、模型家族（谁是谁）</div>
+
+<div class="term-card" data-keywords="GPT-4 GPT-4o GPT-3.5 openai chatgpt o1 o3">
+<div class="term-name">GPT系列 <span class="en">OpenAI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">GPT = Generative Pre-trained Transformer。数字代表代数（3→4→4o），o = omni（全能），o1/o3 = 推理增强系列</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI圈的"iPhone"。GPT-3.5 = iPhone SE（入门款），GPT-4 = iPhone 15 Pro（旗舰），GPT-4o = iPhone 16（全能版），o1/o3 = 专业工作站（推理强但慢）。</div>
+</div>
+
+<div class="term-card" data-keywords="Claude anthropic sonnet opus haiku">
+<div class="term-name">Claude <span class="en">Anthropic</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Claude据说以信息论先驱Claude Shannon命名。版本用诗歌体裁命名：Haiku（俳句-轻快）、Sonnet（十四行诗-均衡）、Opus（巨著-重型）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>GPT最强的竞争对手。Haiku = 快但简单，Sonnet = 均衡之选，Opus = 最强但贵。特点：长文本处理强，写作质量高，"最像人"的AI。</div>
+</div>
+
+<div class="term-card" data-keywords="Gemini google bard 多模态">
+<div class="term-name">Gemini <span class="en">Google</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Gemini = 双子座，暗示其"双重能力"（文字+图片/视频），也致敬Google DeepMind的Gemini项目</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Google家的大模型，前身叫Bard。最大优势：多模态能力（能同时理解文字、图片、视频、音频）。就像一个能看图听声的AI。</div>
+</div>
+
+<div class="term-card" data-keywords="文心一言 ERNIE 百度 文心">
+<div class="term-name">文心一言 <span class="en">ERNIE Bot / 百度</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">ERNIE = Enhanced Representation through kNowledge IntEgration（通过知识整合增强表示），中文名"文心"取自《文心雕龙》</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>百度家的AI，中文能力不错，免费额度多。适合日常用，但创意写作和复杂推理比GPT/Claude弱一点。</div>
+</div>
+
+<div class="term-card" data-keywords="通义千问 qwen 阿里 alibaba">
+<div class="term-name">通义千问 <span class="en">Qwen / 阿里</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Qwen = Q（Question/求问）+ Wen（文/中文），"通义"取"通达义理"之意</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>阿里家的AI。开源版本多（Qwen系列可免费部署），性价比高，中文能力强。想做自己的AI应用，Qwen是最好的开源选择之一。</div>
+</div>
+
+<div class="term-card" data-keywords="豆包 doubao 字节跳动 bytedance">
+<div class="term-name">豆包 <span class="en">Doubao / 字节跳动</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">豆包 = 中国北方传统食物（豆沙包），取"亲民、接地气"之意</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>字节跳动的AI。免费额度最大方，Coze（扣子）平台背后用的就是豆包。适合日常聊天和轻量任务。</div>
+</div>
+
+<div class="term-card" data-keywords="deepseek 深度求索 deep seek">
+<div class="term-name">DeepSeek <span class="en">深度求索</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Deep = 深度，Seek = 探索/求索。中国AI公司深度求索的产品</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>2025年最火的国产AI！最大亮点：开源+极低成本。用1/10的价格达到了接近GPT-4的效果，震动整个AI圈。就像手机界突然出个牌子，1/10价格做出iPhone水平的手机。</div>
+</div>
+
+<div class="term-card" data-keywords="Llama meta 开源大模型 羊驼">
+<div class="term-name">LLaMA <span class="en">Meta</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">LLaMA = Large Language Model Meta AI，也是美洲驼（羊驼）的英文名</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Meta（Facebook）开源的大模型。开源 = 免费下载、自己部署、随便改。AI圈的"安卓"——免费但需要自己组装。很多国产模型就是在LLaMA基础上改的。</div>
+</div>
+
+<div class="term-card" data-keywords="Midjourney MJ 绘画 生图">
+<div class="term-name">Midjourney <span class="en">Midjourney</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Mid = 中间，Journey = 旅程。"旅途中的中途"——暗示探索AI创作之路</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>最强AI画图工具。你用文字描述画面，它就画出来。画风偏艺术感，画质顶级。但要付费（约$10/月起），且只能在Discord里用。</div>
+</div>
+
+<div class="term-card" data-keywords="stable diffusion SD 开源绘画">
+<div class="term-name">Stable Diffusion <span class="en">SD / Stability AI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Stable = 稳定的，Diffusion = 扩散（一种图像生成算法，从噪点逐步去噪生成图片）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>开源的AI绘画工具。和Midjourney功能类似，但可以免费自己部署，自由度极高。就像Midjourney是"苹果"（好用但要钱），SD是"安卓"（免费但要折腾）。</div>
+</div>
+
+<div class="term-card" data-keywords="DALL-E 达利 openai 绘画">
+<div class="term-name">DALL·E <span class="en">OpenAI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">致敬超现实主义画家萨尔瓦多·达利（Dalí）+ Pixar动画角色WALL·E，组合成DALL·E</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>OpenAI的AI画图工具，集成在ChatGPT里。特点：理解力强，你说啥它画啥，比Midjourney更"听话"，但艺术感稍弱。</div>
+</div>
+
+<div class="term-card" data-keywords="Sora openai 视频 生成">
+<div class="term-name">Sora <span class="en">OpenAI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Sora = 日语"空（そら）"，寓意"无限可能的天空"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>OpenAI的AI视频生成工具。给它一段文字描述，它就能生成一段视频。目前还在测试中，效果惊人但还没完全开放。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="kimi 月之暗面 moonshot 长文本">
+<div class="term-name">Kimi <span class="en">月之暗面 / Moonshot AI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Kimi据说源自电影《A.I.》中的机器人小孩角色。公司名"月之暗面"取自Pink Floyd同名专辑</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>国产AI中的"长文本之王"。最早支持200万字超长上下文，你可以直接丢一本书进去让它总结。2024年火爆全网，排队注册。免费，适合读长文档/论文。</div>
+</div>
+
+<div class="term-card" data-keywords="讯飞星火 spark iflytek 科大讯飞">
+<div class="term-name">讯飞星火 <span class="en">Spark / 科大讯飞</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Spark = 火花，寓意"星火燎原"。科大讯飞出品</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>科大讯飞的AI。语音技术出身，所以语音识别和语音合成能力特别强。适合做语音相关的AI应用。免费版可用。</div>
+</div>
+
+<div class="term-card" data-keywords="智谱 ChatGLM GLM 清华">
+<div class="term-name">智谱 / ChatGLM <span class="en">Zhipu AI / 清华系</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">GLM = General Language Model（通用语言模型），Chat = 对话。智谱AI出品，清华技术背景</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>清华系AI公司，开源界的明星。ChatGLM系列可以免费下载部署，国产开源模型里最早出圈的。学术圈用得多，很多高校AI研究基于GLM做。</div>
+</div>
+
+<div class="term-card" data-keywords="百川 baichuan 开源大模型">
+<div class="term-name">百川 <span class="en">Baichuan AI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">百川 = 海纳百川，寓意"汇聚各种知识"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>王小川（搜狗创始人）做的国产大模型。开源版本多，适合自己部署。定位和通义千问类似——开源+可商用。</div>
+</div>
+
+<div class="term-card" data-keywords="MiniMax 海螺AI 视频 语音">
+<div class="term-name">MiniMax / 海螺AI <span class="en">MiniMax</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">MiniMax源自博弈论"极小化极大算法"。"海螺"取"倾听"之意</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>国产AI中的"多模态选手"。语音合成和视频生成能力突出，海螺AI的视频生成效果接近Sora。免费体验额度多。</div>
+</div>
+
+<div class="term-card" data-keywords="Mistral 欧洲大模型 开源 法国">
+<div class="term-name">Mistral <span class="en">Mistral AI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Mistral = 密史脱拉风（法国南部强风），寓意"来势汹汹"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>欧洲最强AI公司。开源模型Mistral 7B一度碾压同级别所有模型，证明"小而精"也能很能打。和LLaMA一样是开源界的明星。</div>
+</div>
+
+<div class="term-card" data-keywords="Yi 零一万物 李开复">
+<div class="term-name">Yi <span class="en">零一万物 / 01.AI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Yi = 易/一，取自《易经》。"零一万物"寓意"从0到1，万物生长"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>李开复创办的AI公司出的模型。开源版本表现不错，但热度不如DeepSeek和Qwen。李开复本人名气大，但模型在圈子里存在感一般。</div>
+</div>
+
+<div class="term-card" data-keywords="可灵 kling 快手 视频 AI视频">
+<div class="term-name">可灵 <span class="en">Kling / 快手</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">可灵 = 灵动可感，也谐音"灵"（灵气/灵感）。快手出品</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>快手出的AI视频生成工具，国产最强。输入文字描述→生成5-10秒视频。效果接近Sora，但国内可以直接用。做短视频内容的好帮手。</div>
+</div>
+
+<div class="term-card" data-keywords="Whisper openai 语音识别 转录">
+<div class="term-name">Whisper <span class="en">OpenAI</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">Whisper = 耳语。暗示"能听懂微弱声音"，体现语音识别的精确性</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>OpenAI开源的语音识别模型。把音频转成文字，支持99种语言，精度极高。免费！BiliNote等工具提取B站字幕，底层就是用Whisper或类似技术。</div>
+</div>
+
+<div class="term-card" data-keywords="GPT-SoVITS 语音克隆 开源 声音克隆">
+<div class="term-name">GPT-SoVITS <span class="en">开源语音克隆</span> <span class="tag tag-model">模型</span></div>
+<div class="term-etymology"><span class="label">📖 命名：</span><span class="content">GPT = 生成式预训练架构，SoVITS = Soft-VC + VITS（两种语音合成技术的组合）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>最火的开源语音克隆工具。只需1分钟的声音样本，就能克隆一个人的声音说任何话。免费！做数字人、有声书、配音的首选工具。但需要GPU才能跑。</div>
+</div>
+<!-- ========== 3. 工具&平台 ========== -->
+<div class="category" id="cat3">
+<div class="category-title"><span class="emoji">🛠️</span> 三、工具 & 平台</div>
+
+<div class="term-card" data-keywords="coze 扣子 工作流 bot 字节跳动">
+<div class="term-name">Coze / 扣子 <span class="en">字节跳动</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Coze = 悠闲/亲密交谈（俚语）。中文"扣子"暗示"把各种能力扣在一起"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>零代码搭建AI Bot的平台。你不需要会编程，拖拖拽拽就能做出一个AI助手。可以接入豆包、GPT等模型，有丰富的国内插件。就像"AI版的乐高"。</div>
+</div>
+
+<div class="term-card" data-keywords="Dify 开源 AI应用开发">
+<div class="term-name">Dify <span class="en">Dify.ai</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Do It For You 的缩写——"为你代劳"，也有"DIY"的变体含义</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>开源的AI应用开发平台。比Coze更自由，可以自己部署，适合想做正经AI产品的人。就像Coze = 租房（方便但受限），Dify = 买房（自由但要装修）。</div>
+</div>
+
+<div class="term-card" data-keywords="n8n 自动化 工作流 开源">
+<div class="term-name">n8n <span class="en">n8n.io</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">n8n = nodemation的缩写（node + automation），8代表中间省略的字母数</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>最强的自动化工作流工具。可以连接400+个服务（邮件、表格、AI、社交媒体等），让它们自动协作。就像"AI版的IFTTT/捷径"，但强大100倍。</div>
+</div>
+
+<div class="term-card" data-keywords="FastGPT 知识库 问答">
+<div class="term-name">FastGPT <span class="en">FastGPT.in</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Fast = 快速，GPT = 大语言模型。强调快速搭建知识库问答</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>专做"知识库问答"的开源平台。你把文档丢进去，它就能基于文档回答问题。就像给你的AI助手装了一个"专属图书馆"。</div>
+</div>
+
+<div class="term-card" data-keywords="langchain 框架 开发">
+<div class="term-name">LangChain <span class="en">LangChain</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Lang = Language（语言），Chain = 链条。把语言模型的能力串联成链条</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>程序员开发AI应用的"脚手架"。它帮你处理常见的AI开发任务（调API、接数据库、记忆对话等），不用从零开始写。就像盖房子不需要自己烧砖——LangChain帮你备好材料。</div>
+</div>
+
+<div class="term-card" data-keywords="huggingface 模型社区 datasets">
+<div class="term-name">Hugging Face <span class="en">huggingface.co</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Hugging = 拥抱，Face = 脸。吉祥物是拥抱的 emoji 🤗，寓意"开放包容的AI社区"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI圈的"GitHub"。全球最大的AI模型和数据集社区，几乎所有开源模型都在这里发布。就像程序员去GitHub找代码，搞AI的去Hugging Face找模型。</div>
+</div>
+
+<div class="term-card" data-keywords="cursor AI编程 编辑器 代码">
+<div class="term-name">Cursor <span class="en">Cursor.com</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Cursor = 光标/游标。编程中最基本的位置指示器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI编程编辑器。你用自然语言说"帮我写一个登录页面"，它就帮你写代码。是当前最火的AI编程工具，被称为"程序员的Copilot Pro Max"。</div>
+</div>
+
+<div class="term-card" data-keywords="bolt v0 devin AI编程 全栈">
+<div class="term-name">Bolt / v0 / Devin <span class="en">AI编程工具</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Bolt = 闪电/螺栓（快而牢固），v0 = version zero（从零开始），Devin = 人名（第一位AI软件工程师）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Bolt.new = 对话式建网站（说一句生成一个网页），v0 = Vercel的AI前端生成器（对话生成UI组件），Devin = AI程序员（全自动写代码+调试+部署）。</div>
+</div>
+
+<div class="term-card" data-keywords="obsidian notion 笔记 双向链接">
+<div class="term-name">Obsidian / Notion <span class="en">笔记工具</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Obsidian = 黑曜石（暗喻知识如石头般坚固），Notion = 概念/想法</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Obsidian = 本地Markdown笔记（极客最爱，数据全在自己手里），Notion = 在线协作笔记（好看好用但数据在云端）。AI圈常用它们做"第二大脑"。</div>
+</div>
+
+<div class="term-card" data-keywords="comfyui 自动1111 webui stable diffusion">
+<div class="term-name">ComfyUI / A1111 <span class="en">SD界面工具</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Comfy = 舒适的，UI = 用户界面；A1111 = Automatic1111（GitHub用户名）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>都是Stable Diffusion的"操控面板"。A1111 = 简单面板（像傻瓜相机），ComfyUI = 节点式面板（像专业暗房，可以精细控制每一步）。</div>
+</div>
+
+<div class="term-card" data-keywords="canva 美图 秀秀 设计">
+<div class="term-name">Canva <span class="en">Canva.com</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">源自Canvas（画布），去掉s = 更简洁的品牌名</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>在线设计工具，零基础做海报/PPT/封面。有AI功能（AI生图、AI排版），免费版够用。做笔记封面、闲鱼商品图非常方便。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="AutoGPT 自动代理 autonomous agent">
+<div class="term-name">AutoGPT <span class="en">AutoGPT</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Auto = 自动的，GPT = 大语言模型。2023年爆火的全自动AI代理</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Agent概念的"鼻祖级"产品。给它一个目标（比如"帮我研究XX市场"），它就自己分解任务、搜索资料、写报告，全程不需要你干预。虽然现在看来有点笨，但开创了"AI自主干活"的先河。</div>
+</div>
+
+<div class="term-card" data-keywords="Replit 在线编程 IDE 云开发">
+<div class="term-name">Replit <span class="en">Replit.com</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">REPL = Read-Eval-Print Loop（编程中的交互式环境），Replit = REPL + it（去做）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>在线编程平台，浏览器里直接写代码运行。不用装任何东西，打开网页就能编程。有AI助手帮忙写代码。适合初学者练手和小项目快速验证。</div>
+</div>
+
+<div class="term-card" data-keywords="Vercel 部署 前端 网站 hosting">
+<div class="term-name">Vercel <span class="en">Vercel.com</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Vercel = Velocity（速度）+ Excel（卓越）的混成词</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>一键部署网站的平台。你写好网页代码→推到GitHub→Vercel自动帮你上线。免费额度够用！前端开发者的最爱。v0（AI生成UI组件）就是Vercel家的产品。</div>
+</div>
+
+<div class="term-card" data-keywords="Make Zapier 自动化 连接 集成 IFTTT">
+<div class="term-name">Make / Zapier <span class="en">自动化连接平台</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Make = 制造/创建（原Integromat），Zapier = Zap（快速完成）+ -ier（做的人）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>"AI版的接水管工"。把各种App连起来自动协作：收到邮件→自动存到表格→自动发微信通知。Make更灵活（像n8n的云端版），Zapier更简单（傻瓜式）。比n8n易用但不如n8n自由。</div>
+</div>
+
+<div class="term-card" data-keywords="Flowise 可视化 langchain 拖拽">
+<div class="term-name">Flowise <span class="en">FlowiseAI</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Flow = 流程/流，ise = 使之成为。让AI变成可视化的流程</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>LangChain的可视化版本。LangChain要写代码，Flowise拖拽就行。和Coze类似但更偏开发者向。开源免费，可以自己部署。</div>
+</div>
+
+<div class="term-card" data-keywords="Gradio Streamlit 展示 界面 demo">
+<div class="term-name">Gradio / Streamlit <span class="en">AI Demo工具</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Gradio = Gradient + I/O（梯度输入输出），Streamlit = Stream（流）+ -lit（小）= 轻量流式</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>给AI模型做"展示页面"的工具。你训练了一个AI模型，想让人试用？用Gradio/Streamlit几行代码就能做出一个网页界面。Gradio更简单（几行搞定），Streamlit更灵活（做得更漂亮）。Hugging Face上的Demo都用Gradio。</div>
+</div>
+
+<div class="term-card" data-keywords="Jupyter Notebook notebook jupyter 交互 python">
+<div class="term-name">Jupyter Notebook <span class="en">Jupyter</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Jupiter（木星）的变体，实际上是Ju(Python) + Py(thon) + R + Julia三种语言的组合</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI/数据科学的"笔记本"。可以在里面写代码、运行代码、看结果、写笔记，全在一个页面里。AI研究者做实验、教学演示都用它。你看到的很多AI教程截图就是Jupyter Notebook。</div>
+</div>
+
+<div class="term-card" data-keywords="VS Code Visual Studio Code 编辑器 插件">
+<div class="term-name">VS Code <span class="en">Visual Studio Code</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Visual = 可视化的，Studio = 工作室，Code = 代码。微软出品的代码编辑器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>全球最火的代码编辑器（不是IDE）。轻量、免费、插件多。Cursor就是在VS Code基础上加AI功能改出来的。几乎所有程序员都用VS Code，就像几乎所有设计师都用Photoshop。</div>
+</div>
+<!-- ========== 4. 技术方法 ========== -->
+<div class="category" id="cat4">
+<div class="category-title"><span class="emoji">⚙️</span> 四、技术方法</div>
+
+<div class="term-card" data-keywords="NLP 自然语言处理 natural language processing">
+<div class="term-name">NLP <span class="en">Natural Language Processing</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Natural = 自然的，Language = 语言，Processing = 处理。让计算机理解人类语言的技术</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI和人类语言打交道的整个领域。你说话、AI能听懂并回答——这个过程涉及的所有技术都算NLP。ChatGPT就是NLP的产物。</div>
+</div>
+
+<div class="term-card" data-keywords="CV 计算机视觉 computer vision">
+<div class="term-name">CV <span class="en">Computer Vision</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Computer = 计算机，Vision = 视觉。让计算机"看懂"图片和视频</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"眼睛"。人脸识别、自动驾驶看路、医学看片子都是CV。注意别和简历（Curriculum Vitae）搞混！</div>
+</div>
+
+<div class="term-card" data-keywords="多模态 multimodal 文字图片">
+<div class="term-name">多模态 <span class="en">Multimodal</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Multi = 多个，Modal = 模态/方式。多种信息形式（文字+图片+音频+视频）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI不只懂文字，还能看图、听声音、看视频。GPT-4o就是多模态的——你能给它发图片让它描述。就像从"只能看书"进化到"能看能听能说"。</div>
+</div>
+
+<div class="term-card" data-keywords="TTS STT 语音合成 语音识别 text to speech">
+<div class="term-name">TTS / STT <span class="en">Text-to-Speech / Speech-to-Text</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">TTS = 文字转语音，STT = 语音转文字。两个互逆的过程</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>TTS = AI说话（Siri的声音），STT = AI听写（语音输入法）。你用的"语音转文字"就是STT，AI配音就是TTS。</div>
+</div>
+
+<div class="term-card" data-keywords="OCR 光学字符识别 识别文字">
+<div class="term-name">OCR <span class="en">Optical Character Recognition</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Optical = 光学的，Character = 字符，Recognition = 识别。用光学方式识别文字</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把图片里的文字变成可编辑的文字。拍一张试卷的照片→自动变成word文档。扫描全能王就是靠OCR。</div>
+</div>
+
+<div class="term-card" data-keywords="知识图谱 knowledge graph">
+<div class="term-name">知识图谱 <span class="en">Knowledge Graph</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Knowledge = 知识，Graph = 图/网络。把知识组织成"实体-关系-实体"的网络结构</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把知识点连成一张网。"姚明→出生地→上海""姚明→职业→篮球"这样的关系网。百度搜索右侧那个"人物卡片"就是知识图谱的应用。</div>
+</div>
+
+<div class="term-card" data-keywords="向量数据库 vector database milvus pinecone">
+<div class="term-name">向量数据库 <span class="en">Vector Database</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Vector = 向量（有方向的数字），Database = 数据库。存储和检索向量数据的专用数据库</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>普通数据库按"精确匹配"搜索（搜"苹果"只找"苹果"），向量数据库按"意思相似"搜索（搜"苹果"也能找到"iPhone"）。是RAG的核心组件。常见产品：Milvus、Pinecone、Chroma。</div>
+</div>
+
+<div class="term-card" data-keywords="LoRA 低秩适应 微调 lora">
+<div class="term-name">LoRA <span class="en">Low-Rank Adaptation</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Low-Rank = 低秩（数学概念，近似简化），Adaptation = 适应。用少量参数微调大模型</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>微调模型的"省钱版"。全量微调 = 重新装修整套房子，LoRA = 只换墙纸和窗帘。效果差不多，但成本只有1/100。AI绘画圈最常用——用LoRA让AI画出特定画风或人物。</div>
+</div>
+
+<div class="term-card" data-keywords="蒸馏 distillation 模型蒸馏">
+<div class="term-name">蒸馏 <span class="en">Distillation</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Distillation = 蒸馏。借用化学中"蒸馏提纯"的概念——大模型为"原液"，蒸馏出小模型为"精华"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让小模型学习大模型的输出，而不是从头训练。就像老师（大模型）先做一遍题，学生（小模型）模仿老师的答案来学习。DeepSeek就是靠蒸馏技术做到又小又强的。</div>
+</div>
+
+<div class="term-card" data-keywords="量化 quantization INT4 INT8 压缩">
+<div class="term-name">量化 <span class="en">Quantization</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Quantization = 量化。把连续的数值变成离散的等级，降低精度以换取速度</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把AI模型的"数字精度"压缩。就像图片压缩：原始图10MB，压缩后1MB，看着差不多但小了10倍。INT8 = 精度压缩到8位，INT4 = 压缩到4位。越压缩越快但越不精确。</div>
+</div>
+
+<div class="term-card" data-keywords="MOE 混合专家 mixture of experts">
+<div class="term-name">MoE <span class="en">Mixture of Experts</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Mixture = 混合，Experts = 专家。多个"专家网络"混合工作</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>不是一个大模型干所有事，而是分成很多小专家，每次只激活需要的几个。就像医院：不是一个大科室看所有病，而是分内科外科眼科，每次只挂需要的科。这样模型可以很大，但每次只花小模型的钱。</div>
+</div>
+
+<div class="term-card" data-keywords="思维链 chain of thought CoT 推理链">
+<div class="term-name">思维链 <span class="en">Chain of Thought / CoT</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Chain = 链条，Thought = 思维。让AI一步一步推理，而不是直接给答案</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让AI"展示解题过程"。不直接给答案，而是一步步推理。就像数学考试不能只写答案要写过程——AI写过程后，答案准确率大幅提升。</div>
+<div class="term-example"><span class="label">💡 例子：</span>问"3×7+2=？"，普通AI直接答23（可能错），思维链AI会说"3×7=21，21+2=23"（更准确）</div>
+</div>
+
+<div class="term-card" data-keywords="function calling 函数调用 工具调用">
+<div class="term-name">Function Calling <span class="en">函数调用</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Function = 函数/功能，Calling = 调用。让AI在回答中调用外部函数/工具</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让AI能"动手干活"，而不只是说话。你问"上海天气如何"，AI不编答案，而是调用天气API获取真实数据。这就是Function Calling——AI从"只会说"进化到"会动手"。</div>
+</div>
+
+<div class="term-card" data-keywords="prompt engineering 提示词工程">
+<div class="term-name">提示词工程 <span class="en">Prompt Engineering</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Prompt = 提示词，Engineering = 工程。把写提示词当成一门工程技术来研究</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>研究"怎么跟AI说话才能得到最好的回答"。就像同一个老师，学生A问"怎么写作文"得到泛泛回答，学生B问"请按议论文结构，用3个论据写800字关于环保的作文"得到精准回答——这就是提示词工程。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="CNN 卷积神经网络 convolutional neural network 图像">
+<div class="term-name">CNN <span class="en">Convolutional Neural Network</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Convolutional = 卷积的（数学中的滑动窗口运算），Neural = 神经的，Network = 网络</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI看图的"眼睛架构"。用一个小窗口在图片上滑来滑去，提取边缘、纹理、形状等特征。就像你用放大镜一点一点看一幅画，先看到线条，再看到形状，最后认出"这是猫"。人脸识别、自动驾驶都是CNN。</div>
+</div>
+
+<div class="term-card" data-keywords="RNN 循环神经网络 recurrent neural network 序列">
+<div class="term-name">RNN <span class="en">Recurrent Neural Network</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Recurrent = 循环的/递归的。网络中有循环连接，能处理序列数据</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"记忆力架构"。普通神经网络看完就忘，RNN能记住前面的输入。就像读小说——你得记住上一章发生了什么才能理解这一章。RNN就是给AI加了"短期记忆"。现在已被Transformer取代，但历史意义重大。</div>
+</div>
+
+<div class="term-card" data-keywords="GAN 生成对抗网络 generative adversarial network">
+<div class="term-name">GAN <span class="en">Generative Adversarial Network</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Generative = 生成的，Adversarial = 对抗的，Network = 网络。两个网络互相对抗</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"造假与鉴假游戏"。生成器（造假者）拼命造假图，判别器（鉴假者）拼命识破。双方越战越强，最终造假者能做出以假乱真的图片。AI换脸（DeepFake）就是GAN的产物。</div>
+</div>
+
+<div class="term-card" data-keywords="扩散模型 diffusion model 去噪 降噪">
+<div class="term-name">扩散模型 <span class="en">Diffusion Model</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Diffusion = 扩散。源自物理学中粒子从高浓度向低浓度扩散的过程</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI绘画的核心技术。原理：给一张清晰图片不断加噪点（正扩散），直到变成雪花屏；AI学会反向操作——从雪花屏慢慢去掉噪点（逆扩散），还原出清晰图片。就像"从乱七八糟中找出秩序"。Midjourney、SD都是扩散模型。</div>
+</div>
+
+<div class="term-card" data-keywords="强化学习 reinforcement learning RL 奖励">
+<div class="term-name">强化学习 <span class="en">Reinforcement Learning</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Reinforcement = 强化/增强。通过奖励和惩罚来学习最佳策略</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"试错学习法"。AI不断尝试，做对了给奖励，做错了给惩罚，慢慢学会最优策略。AlphaGo就是强化学习——自己和自己下了几千万盘棋，赢了的招数被强化。RLHF就是强化学习+人类反馈的版本。</div>
+</div>
+
+<div class="term-card" data-keywords="迁移学习 transfer learning 预训练 微调">
+<div class="term-name">迁移学习 <span class="en">Transfer Learning</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Transfer = 迁移/转移。把一个领域学到的知识迁移到另一个领域</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>"触类旁通"的AI版。先在大量数据上学会通用能力，再用少量数据快速学会专业任务。就像你会骑自行车，学骑摩托车就很快——把骑车的平衡感"迁移"过来了。大模型微调本质上就是迁移学习。</div>
+</div>
+
+<div class="term-card" data-keywords="自监督学习 self-supervised learning 无标注">
+<div class="term-name">自监督学习 <span class="en">Self-supervised Learning</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Self = 自我，Supervised = 监督的。不需要人工标注，AI自己给自己出题</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"自学成才"。不需要人标数据，AI自己从数据中制造学习任务。比如：遮住一句话里的某个词，让AI猜是什么词（完形填空）。GPT就是这么训练的——读完互联网，猜下一个词。</div>
+</div>
+
+<div class="term-card" data-keywords="SFT 监督微调 supervised fine-tuning 指令微调 instruction tuning">
+<div class="term-name">SFT / 指令微调 <span class="en">Supervised Fine-Tuning</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Supervised = 监督的（有人教的），Fine-tuning = 微调。用标注好的问答数据教AI</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>给AI"上课"。预训练后的AI只会"接话"（你说上半句它接下半句），SFT教会它"听指令"（你问它答）。用大量"问题→正确答案"的范例教AI怎么回答问题。这是ChatGPT能聊天的关键步骤。</div>
+</div>
+
+<div class="term-card" data-keywords="DPO 直接偏好优化 direct preference optimization">
+<div class="term-name">DPO <span class="en">Direct Preference Optimization</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Direct = 直接的，Preference = 偏好，Optimization = 优化。直接用偏好数据优化模型</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>RLHF的"简化版"。RLHF = 训练一个奖励模型再优化（绕一圈），DPO = 直接用人类偏好数据优化（一步到位）。就像RLHF是"先培训一个评委来打分"，DPO是"直接告诉AI哪个答案更好"。更简单更省钱，现在越来越流行。</div>
+</div>
+
+<div class="term-card" data-keywords="红队测试 red teaming 安全测试 攻击">
+<div class="term-name">红队测试 <span class="en">Red Teaming</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Red Team = 红队。源自军事演习中的"假想敌"（红军攻击，蓝军防守）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>请一批人专门"攻击"AI，试图让它说出不该说的话。就像请黑客来攻破你的系统——不是为了搞破坏，而是为了找出漏洞提前修补。GPT-4发布前就经过大量红队测试。</div>
+</div>
+
+<div class="term-card" data-keywords="端到端 end-to-end E2E">
+<div class="term-name">端到端 <span class="en">End-to-End</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">End = 端/终点。从输入端直接到输出端，中间不需要人工干预</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>输入原始数据→直接出最终结果，中间步骤AI自己搞定。以前做语音识别要分好几步（提取特征→建模→识别），端到端 = 直接输入声音→输出文字。就像从"翻译→校对→润色"变成"一键翻译"。</div>
+</div>
+<!-- ========== 5. 协议&接口 ========== -->
+<div class="category" id="cat5">
+<div class="category-title"><span class="emoji">📡</span> 五、协议 & 接口</div>
+
+<div class="term-card" data-keywords="API 接口 application programming interface">
+<div class="term-name">API <span class="en">Application Programming Interface</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Application = 应用程序，Programming = 编程，Interface = 接口/界面。程序之间通信的"接口"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>API = 餐厅菜单。你不需要知道厨房怎么炒菜（底层代码），只需要看菜单点菜（调用API），厨房就把菜端出来（返回结果）。比如你在Coze里用B站插件，Coze就是通过API调B站的数据。</div>
+</div>
+
+<div class="term-card" data-keywords="REST RESTful API HTTP">
+<div class="term-name">REST <span class="en">Representational State Transfer</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Representational = 表征的，State = 状态，Transfer = 转移。一种软件架构风格</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>API的一种"格式规范"。就像餐厅统一了点菜格式：GET = 看菜单，POST = 点菜，PUT = 改菜，DELETE = 退菜。大部分AI的API都是REST风格的。</div>
+</div>
+
+<div class="term-card" data-keywords="webhook 回调 钩子">
+<div class="term-name">Webhook <span class="en">Webhook</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Web = 网络，Hook = 钩子。在网络中"钩"住某个事件，当事件发生时自动通知你</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>API是你主动问（"有新邮件吗？"），Webhook是它主动告诉你（"你收到新邮件了！"）。就像快递：API = 你天天查物流，Webhook = 快递到了自动给你发短信。</div>
+</div>
+
+<div class="term-card" data-keywords="MCP model context protocol 模型上下文协议">
+<div class="term-name">MCP <span class="en">Model Context Protocol</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Model = 模型，Context = 上下文，Protocol = 协议。Anthropic提出的开放协议，让AI能连接外部数据源</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"USB接口"。以前AI连数据库、连文件、连工具，每个都要单独写代码。现在有了MCP，就像有了USB标准——所有设备插上就能用。2024年底推出，正在快速普及。</div>
+</div>
+
+<div class="term-card" data-keywords="SSE server-sent events 流式">
+<div class="term-name">SSE <span class="en">Server-Sent Events</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Server = 服务器，Sent = 发送，Events = 事件。服务器持续向客户端推送事件</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI"一个字一个字往外蹦"的技术。你用ChatGPT时，回答不是一下子全出来，而是像打字一样一个字一个字出现——这就是SSE在背后工作。</div>
+</div>
+
+<div class="term-card" data-keywords="JSON 数据格式">
+<div class="term-name">JSON <span class="en">JavaScript Object Notation</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">JavaScript = 编程语言，Object = 对象，Notation = 标记法。源自JS的对象表示语法</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>最常用的数据格式。就像一个标准化的表格，AI和工具之间传数据基本都用JSON。例子：{"名字": "小明", "年龄": 20}。你不需要会JS，只要知道它是"AI圈通用的数据语言"。</div>
+</div>
+
+<div class="term-card" data-keywords="SDK 开发工具包 software development kit">
+<div class="term-name">SDK <span class="en">Software Development Kit</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Software = 软件，Development = 开发，Kit = 工具包</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>开发某个平台应用的"万能工具箱"。API是"菜单"，SDK是"厨房+厨师+食材"。比如OpenAI SDK = 帮你写好各种调用GPT的代码模板，你直接用就行。</div>
+</div>
+
+<div class="term-card" data-keywords="OAuth 授权 登录 第三方登录">
+<div class="term-name">OAuth <span class="en">Open Authorization</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Open = 开放的，Authorization = 授权。开放标准授权协议</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>"用微信登录""用Google登录"这个功能就是OAuth。你不需要把密码给第三方，只是授权它访问你的部分信息。就像你给酒店前台身份证复印件而不是原件。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="WebSocket 双向通信 实时">
+<div class="term-name">WebSocket <span class="en">WebSocket</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Web = 网络，Socket = 插座/套接字。在网络上建立持久连接</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>和SSE类似但更强。SSE = 服务器单向推给你，WebSocket = 双向通话（你也能实时推给服务器）。就像SSE是收音机（只能听），WebSocket是电话（能说能听）。ChatGPT的实时语音对话就用了WebSocket。</div>
+</div>
+
+<div class="term-card" data-keywords="Markdown md 标记语言 格式">
+<div class="term-name">Markdown <span class="en">Markdown</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Mark = 标记，Down = 下来。由John Gruber创造，"用简单标记写出格式化文本"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>最简单的排版语言。用几个符号就能让文字变粗体、变标题、加链接。比如 **粗体** → **粗体**，# 标题 → 大标题。AI输出几乎都用Markdown格式。GitHub、Notion、Obsidian全都支持Markdown。</div>
+</div>
+
+<div class="term-card" data-keywords="YAML 配置文件 格式">
+<div class="term-name">YAML <span class="en">YAML Ain't Markup Language</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">递归缩写 = "YAML不是标记语言"（程序员又来冷笑话了）。一种人类友好的配置格式</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>写配置文件用的格式。比JSON更易读，用缩进表示层级。就像写大纲：一行缩进就是子分类。Docker、Coze工作流的配置都用YAML。</div>
+</div>
+
+<div class="term-card" data-keywords="LaTeX latex 排版 公式 论文">
+<div class="term-name">LaTeX <span class="en">LaTeX</span> <span class="tag tag-protocol">协议</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">由Leslie Lamport基于TeX开发，La+TeX。TeX源自希腊语τέχνη（技艺）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>写数学公式和学术论文的专业排版系统。你在AI对话中看到的漂亮数学公式（比如 E=mc² 的复杂版本），底层就是LaTeX渲染的。学术论文几乎全用LaTeX写。你不需要会LaTeX，但看到这个词要知道"哦这是数学公式"。</div>
+</div>
+<!-- ========== 6. 部署&运维 ========== -->
+<div class="category" id="cat6">
+<div class="category-title"><span class="emoji">📦</span> 六、部署 & 运维</div>
+
+<div class="term-card" data-keywords="Docker 容器 镜像 部署">
+<div class="term-name">Docker <span class="en">Docker</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Docker = 码头工人。隐喻：容器 = 集装箱，把软件和依赖打包进标准容器，到哪都能运行</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>软件界的"集装箱"。以前装软件像搬家——到新家可能缺这缺那跑不起来。Docker把软件和所有依赖打包进"集装箱"，搬到任何电脑上都能直接跑。你部署BiliNote就需要Docker。</div>
+</div>
+
+<div class="term-card" data-keywords="GitHub 代码仓库 git 开源">
+<div class="term-name">GitHub <span class="en">GitHub.com</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Git = 一个版本控制工具（Linus Torvalds创建，名字来自英国俚语"混蛋"），Hub = 中心/枢纽</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>程序员的"百度网盘+协作平台"。所有开源AI项目都放在GitHub上。你要下载BiliNote、Dify等开源工具，都得去GitHub。你之前用Watt Toolkit加速的就是这个。</div>
+</div>
+
+<div class="term-card" data-keywords="git 版本控制 commit push pull">
+<div class="term-name">Git <span class="en">Git</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Linus Torvalds命名，英国俚语"混蛋"的意思（他自嘲式命名风格）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>代码的"存档系统"。打游戏可以存档/读档，Git就是给代码做存档的。commit = 存档，push = 上传到云端，pull = 下载最新版，branch = 另开一条存档线。</div>
+</div>
+
+<div class="term-card" data-keywords="开源 open source 闭源 closed source">
+<div class="term-name">开源 / 闭源 <span class="en">Open Source / Closed Source</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Open = 开放的，Source = 源代码。源代码公开 vs 不公开</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>开源 = 公开配方（任何人都能看怎么做、自己改），闭源 = 可口可乐秘方（你只能喝，不知道怎么做的）。GPT是闭源的，LLaMA/Qwen/DeepSeek是开源的。</div>
+</div>
+
+<div class="term-card" data-keywords="部署 deploy 部署方式 cloud 本地 local">
+<div class="term-name">云端 / 本地部署 <span class="en">Cloud / Local Deployment</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Cloud = 云（别人的服务器），Local = 本地（自己的电脑）。部署 = Deploy = 把软件装好让人用</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>云端部署 = 租房（用别人的服务器，每月交钱，方便），本地部署 = 买房（用自己的电脑，免费但要有好配置）。Coze是云端的，Dify可以本地部署。</div>
+</div>
+
+<div class="term-card" data-keywords="GPU 显卡 算力 CUDA NVIDIA">
+<div class="term-name">GPU <span class="en">Graphics Processing Unit</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Graphics = 图形，Processing = 处理，Unit = 单元。原本是处理图形的芯片</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"发动机"。CPU是"聪明的人慢慢算"，GPU是"一万个普通人同时算"。AI需要大量并行计算，所以用GPU。NVIDIA的GPU最贵但也最好。你听到的"算力"基本就是指GPU。</div>
+</div>
+
+<div class="term-card" data-keywords="serverless 无服务器 lambda 云函数">
+<div class="term-name">Serverless <span class="en">Serverless</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Server = 服务器，Less = 没有。不是真的没有服务器，而是你不需要管服务器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>你不用自己买服务器、装系统、维护运行，而是把代码扔给云平台，它帮你运行。按使用量付费（用多少付多少）。就像打车 vs 买车——Serverless是打车，不养车但随叫随到。</div>
+</div>
+
+<div class="term-card" data-keywords="VPS 虚拟专用服务器 云服务器 ECS">
+<div class="term-name">VPS / 云服务器 <span class="en">Virtual Private Server</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Virtual = 虚拟的，Private = 私有的，Server = 服务器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>租一台远程电脑。你可以在上面装任何软件、跑任何程序。阿里云ECS、腾讯云CVM都是VPS。价格：几十到几百元/月。部署Dify/n8n就需要一台VPS。</div>
+</div>
+
+<div class="term-card" data-keywords="Linux 操作系统 ubuntu centos 服务器">
+<div class="term-name">Linux <span class="en">Linux</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">由Linus Torvalds创建，名字 = Linus + Unix（Linus的迷你版Unix）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>服务器上最常用的操作系统。你用的Windows是微软的，Linux是免费的。服务器90%以上跑Linux。Ubuntu是最友好的Linux版本，推荐你以后接触Linux从Ubuntu开始。</div>
+</div>
+
+<div class="term-card" data-keywords="npm pnpm yarn node 包管理 前端">
+<div class="term-name">npm / pnpm / yarn <span class="en">Node包管理器</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">npm = Node Package Manager，pnpm = performant npm，yarn = 纱线（Facebook出品）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>JavaScript的"应用商店"。npm install xxx = 一键安装某个代码库。npm是原装的，pnpm更快更省空间，yarn更稳定。就像手机应用商店：华为/小米/OPPO商店的区别。</div>
+</div>
+
+<div class="term-card" data-keywords="pip python 包管理 安装">
+<div class="term-name">pip <span class="en">pip</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">pip = "pip installs packages"的递归缩写（程序员冷笑话）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Python的"应用商店"。pip install xxx = 一键安装Python代码库。和npm一个意思，只是Python版。AI项目大多用Python，所以pip是最常遇到的命令。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="Kubernetes K8s 容器编排 集群">
+<div class="term-name">Kubernetes / K8s <span class="en">Kubernetes</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Kubernetes = 希腊语"舵手"，K8s = K+8个字母+s的缩写。Google开源的容器编排系统</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Docker的"大管家"。Docker装好一个集装箱，K8s负责管理几百个集装箱——哪个坏了自动重启、流量大了自动扩容、哪台机器满了自动调度。就像物流中心的总调度。你暂时用不到，但搞AI部署到生产环境就离不开它。</div>
+</div>
+
+<div class="term-card" data-keywords="CI/CD 持续集成 持续部署 continuous integration">
+<div class="term-name">CI/CD <span class="en">Continuous Integration / Continuous Deployment</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Continuous = 持续的，Integration = 集成，Deployment = 部署。代码改了就自动测试+上线</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>代码一提交→自动跑测试→测试通过→自动上线。没有CI/CD时，上线靠人手动操作（经常出事）；有CI/CD后，一切自动化。就像从"手动挡"升级到"自动挡"。</div>
+</div>
+
+<div class="term-card" data-keywords="Nginx 反向代理 服务器 负载均衡">
+<div class="term-name">Nginx <span class="en">Nginx</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Nginx = Engine X的缩写。俄罗斯程序员Igor Sysoev创建的高性能Web服务器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>网站的"前台接待员"。用户访问你的网站时，Nginx负责接待、分流、转发请求。部署AI应用到服务器上，几乎都要装Nginx。就像餐厅门口的服务员——帮你找到合适的座位。</div>
+</div>
+
+<div class="term-card" data-keywords="边缘计算 edge computing 端侧 本地计算">
+<div class="term-name">边缘计算 <span class="en">Edge Computing</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Edge = 边缘/端侧。在数据产生的"边缘"（设备端）计算，而不是传到远端云服务器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把AI装到你手机/电脑上直接跑，而不是把数据传到云端。好处：快（不用等网络）、省流量、隐私安全。手机上的AI美颜、人脸解锁就是边缘计算。大模型也越来越多地"塞"进手机端。</div>
+</div>
+<!-- ========== 7. 商业&应用 ========== -->
+<div class="category" id="cat7">
+<div class="category-title"><span class="emoji">💼</span> 七、商业 & 应用</div>
+
+<div class="term-card" data-keywords="SaaS 软件即服务 software as a service">
+<div class="term-name">SaaS <span class="en">Software as a Service</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Software = 软件，as a Service = 作为服务。软件不再是产品而是服务</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>不再买断软件，而是按月/按量付费使用。ChatGPT Plus每月20美元 = SaaS。你用水用电也是SaaS模式——按用量付费，不是一次性买断水管。</div>
+</div>
+
+<div class="term-card" data-keywords="私域 公域 流量 变现">
+<div class="term-name">私域 / 公域流量 <span class="en">Private / Public Traffic</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Private = 私有的，Public = 公共的，Traffic = 流量/人流</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>公域 = 在商场摆摊（流量归商场，说赶你走就赶你走），私域 = 把客户加到自己微信（流量归你，想怎么触达怎么触达）。闲鱼/小红书是公域，微信好友/公众号是私域。</div>
+</div>
+
+<div class="term-card" data-keywords="GMV 转化率 ROI ARPU">
+<div class="term-name">GMV / 转化率 / ROI <span class="en">电商/广告指标</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">GMV = Gross Merchandise Volume（总交易额），ROI = Return on Investment（投资回报率），转化率 = 访客中下单的比例</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>GMV = 一共卖了多少钱，转化率 = 100个人看了几个人买了，ROI = 花1块赚了几块。做闲鱼笔记生意的关键指标：ROI要大于1（赚的比花的多）。</div>
+</div>
+
+<div class="term-card" data-keywords="AIGC AI生成内容 人工智能生成内容">
+<div class="term-name">AIGC <span class="en">AI-Generated Content</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">AI = 人工智能，Generated = 生成的，Content = 内容。AI自动生成文字/图片/视频/音乐</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>所有AI创作出来的东西都叫AIGC。AI写的文章、AI画的画、AI做的视频、AI写的代码——全是AIGC。你用AI总结B站视频做笔记卖，本质上就是AIGC变现。</div>
+</div>
+
+<div class="term-card" data-keywords="数字人 虚拟人 avatar 虚拟主播">
+<div class="term-name">数字人 <span class="en">Digital Human / Avatar</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Digital = 数字的，Human = 人类。用AI生成的虚拟人形象</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI虚拟主播。输入文字就能让一个"假人"在视频里说话。现在很多抖音带货主播其实是数字人——你根本看不出来。做知识付费视频也可以用数字人出镜。</div>
+</div>
+
+<div class="term-card" data-keywords="知识库 knowledge base 知识管理">
+<div class="term-name">知识库 <span class="en">Knowledge Base</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Knowledge = 知识，Base = 基地/库。存储结构化知识的系统</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI的"专属图书馆"。你把资料（PDF/文档/网页）丢进知识库，AI就能基于这些资料回答问题。Coze、Dify、FastGPT都能建知识库。你要做B站笔记，知识库就是存储笔记的地方。</div>
+</div>
+
+<div class="term-card" data-keywords="低代码 无代码 low-code no-code">
+<div class="term-name">低代码 / 无代码 <span class="en">Low-code / No-code</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Low = 低，No = 无，Code = 代码。尽量少写或不写代码就能开发应用</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>不会编程也能做AI应用！Coze = 无代码（纯拖拽），Dify = 低代码（基本拖拽，偶尔写几行）。就像你不会做菜也能用空气炸锅做一顿饭——不需要厨师技能。</div>
+</div>
+
+<div class="term-card" data-keywords="MVP 最小可行产品 minimum viable product">
+<div class="term-name">MVP <span class="en">Minimum Viable Product</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Minimum = 最小的，Viable = 可行的，Product = 产品。能验证想法的最简产品</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>先做最简陋的版本试试水，别一上来就做完美的。你要卖B站笔记，MVP就是：用BibiGPT手动总结1个视频 → 上闲鱼 → 看有人买没。先验证可行，再花精力自动化。</div>
+</div>
+
+<div class="term-card" data-keywords="飞书 钉钉 企业微信 协作">
+<div class="term-name">飞书 / 钉钉 / 企业微信 <span class="en">办公协作平台</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">飞书 = 飞传书信，钉钉 = 叮叮（消息提醒声），企业微信 = 微信的企业版</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>三大办公平台。AI集成最多的是飞书（字节跳动出品，和Coze同一家），支持多维表格+AI工作流。Coze的Bot可以直接发布到飞书。</div>
+</div>
+
+</div>
+
+
+<div class="term-card" data-keywords="MaaS 模型即服务 model as a service">
+<div class="term-name">MaaS <span class="en">Model as a Service</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Model = 模型，as a Service = 作为服务。AI模型像水电一样按需供应</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>SaaS是"软件即服务"，MaaS是"AI模型即服务"。你不需要自己训练模型，直接调用别人的模型API按量付费。OpenAI、通义千问都提供MaaS。就像你不需要建发电厂，直接用电就行。</div>
+</div>
+
+<div class="term-card" data-keywords="PMF 产品市场匹配 product market fit">
+<div class="term-name">PMF <span class="en">Product-Market Fit</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Product = 产品，Market = 市场，Fit = 匹配。产品正好满足市场需求</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>你的产品有人愿意花钱买 = 达到了PMF。没达到PMF = 你做的东西没人要。做闲鱼笔记生意，如果有人买=PMF了，没人买=没PMF，需要调整产品方向。</div>
+</div>
+
+<div class="term-card" data-keywords="护城河 moat 竞争壁垒">
+<div class="term-name">护城河 <span class="en">Moat</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Moat = 城堡周围的护城河。巴菲特投资理论核心概念，指企业的竞争壁垒</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>别人抄不走、抢不去的竞争优势。你的B站笔记生意护城河是啥？总结谁都能做，所以护城河很浅。但如果你的笔记是"独家理解的体系化整理"或者"有私域客户群"，那就是护城河。</div>
+</div>
+
+<div class="term-card" data-keywords="数据飞轮 data flywheel 飞轮效应">
+<div class="term-name">数据飞轮 <span class="en">Data Flywheel</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Flywheel = 飞轮。源自机械中的飞轮效应——越转越快，停不下来</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>用户越多→数据越多→AI越强→产品越好→用户更多。像飞轮一样越转越快，一旦转起来竞争者就追不上了。这就是为什么ChatGPT越用越聪明——你的使用在帮它训练。</div>
+</div>
+
+<div class="term-card" data-keywords="具身智能 embodied AI 机器人">
+<div class="term-name">具身智能 <span class="en">Embodied AI</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Embodied = 具体的/有身体的。AI有了物理身体，能在真实世界行动</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI + 机器人 = 具身智能。现在的AI只能"说话"，具身智能让AI能"动手"——在真实世界行走、抓取、操作。特斯拉的人形机器人Optimus、波士顿动力的机器狗，都是具身智能的方向。</div>
+</div>
+
+<div class="term-card" data-keywords="世界模型 world model 物理世界 模拟">
+<div class="term-name">世界模型 <span class="en">World Model</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">World = 世界，Model = 模型。AI对物理世界运行规律的理解和模拟</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让AI理解"真实世界怎么运作"。现在AI只知道文字里的世界，世界模型让AI知道"杯子掉地上会碎""水往低处流"。Sora被认为是通向世界模型的一步——AI通过生成视频学到了物理规律。</div>
+</div>
+
+<div class="term-card" data-keywords="范式 paradigm 范式转移 paradigm shift">
+<div class="term-name">范式 <span class="en">Paradigm</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Paradigm = 范例/范式。源自希腊语 paradeigma（典范）。科学哲学家库恩提出"范式转移"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI圈高频黑话。"范式"= 一套做事的基本思路，"范式转移"= 思路彻底变了。以前做AI要手动设计特征→现在让AI自己学 = 范式转移。以前卖软件→现在卖订阅 = 范式转移。简单说就是"玩法变了"。</div>
+</div>
+
+<div class="term-card" data-keywords="幂律 power law 长尾 二八法则">
+<div class="term-name">幂律 <span class="en">Power Law</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Power = 幂/力量，Law = 定律。少数占据大部分资源的统计规律</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>"二八法则"的数学版本。AI圈的幂律：1%的模型占据99%的用量，1%的用户贡献99%的数据。闲鱼上也是：1%的商品获得99%的流量。理解幂律就不会纠结"为什么我的东西没人看"——因为注意力本身就是极不均匀的。</div>
+</div>
+<!-- ========== 8. 多模态&创作 ========== -->
+<div class="category" id="cat8">
+<div class="category-title"><span class="emoji">🎨</span> 八、多模态 & 创作</div>
+
+<div class="term-card" data-keywords="文生图 text to image T2I">
+<div class="term-name">文生图 <span class="en">Text-to-Image / T2I</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Text = 文字，Image = 图片。输入文字描述，AI生成对应图片</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>你说"一只穿西装的猫在喝咖啡"，AI就画出来。Midjourney、DALL·E、Stable Diffusion都是文生图工具。</div>
+</div>
+
+<div class="term-card" data-keywords="文生视频 text to video T2V">
+<div class="term-name">文生视频 <span class="en">Text-to-Video / T2V</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Text = 文字，Video = 视频。输入文字描述，AI生成视频</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>文生图的升级版——从画一张图到拍一段视频。Sora、可灵（快手）、Vidu（生数科技）都是。你还不能随便用，但很快就会普及。</div>
+</div>
+
+<div class="term-card" data-keywords="图生图 image to image I2I img2img">
+<div class="term-name">图生图 <span class="en">Image-to-Image / I2I</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Image = 图片。输入一张图，AI基于它生成新图片</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>给AI一张草图/照片，它帮你改风格。比如：你的照片 → 变成动漫风。或者：简笔画 → 变成精美插画。就像PS的"一键滤镜"但强大100倍。</div>
+</div>
+
+<div class="term-card" data-keywords="ControlNet 控制网 姿势 控制">
+<div class="term-name">ControlNet <span class="en">ControlNet</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Control = 控制，Net = 网络。给SD加一个"控制层"，精确控制生成结果</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让AI画图"听话"的技术。没有ControlNet：你说"站着"AI可能画坐着。有ControlNet：你给一个姿势草图，AI就严格按草图姿势画。就像从"随便画"变成"按模子画"。</div>
+</div>
+
+<div class="term-card" data-keywords="voice clone 语音克隆 声音克隆">
+<div class="term-name">语音克隆 <span class="en">Voice Cloning</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Voice = 声音，Clone = 克隆。复制某人的声音特征</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>给AI听几秒你的声音，它就能用你的声音说任何话。像GPT-SoVITS、CosyVoice都是开源工具。可以做有声书、配音、数字人。但也有被滥用于诈骗的风险。</div>
+</div>
+
+<div class="term-card" data-keywords="数字水印 watermark AI检测">
+<div class="term-name">数字水印 <span class="en">Digital Watermark</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Digital = 数字的，Watermark = 水印。嵌入在数字内容中的隐藏标记</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI生成的图片/视频里偷偷藏了个"印章"，肉眼看不出来，但技术手段能检测出来"这是AI生成的"。各大AI公司都在加水印，防止AI内容被滥用。</div>
+</div>
+
+<div class="term-card" data-keywords="AI agent 工作流 workflow 自动化 自动执行">
+<div class="term-name">AI工作流 <span class="en">AI Workflow</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Work = 工作，Flow = 流程。一系列AI操作按顺序自动执行</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>把多个AI步骤串起来自动跑。你给一个B站链接 → 工作流自动提取字幕 → 自动总结 → 自动润色 → 自动生成PDF。你只管丢链接，别的全自动。Coze就是做这个的。</div>
+</div>
+
+<div class="term-card" data-keywords="Canvas 画布 全景 大模型交互">
+<div class="term-name">Canvas <span class="en">Canvas</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Canvas = 画布。ChatGPT推出的"画布模式"，可以在一个页面里同时编辑和对话</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>以前AI对话是"聊天模式"（一来一回），Canvas是"文档模式"（左边文档，右边AI，随时改随时问）。就像从"微信聊天"升级到"在线协作文档"。</div>
+</div>
+
+<div class="term-card" data-keywords="Artifacts 产物 Claude 展示">
+<div class="term-name">Artifacts <span class="en">Claude Artifacts</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Artifact = 人工制品/产物。Claude推出的实时预览功能</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Claude的特色功能：AI写的代码/网页/图表直接在旁边实时显示，不用复制到别处运行。你说"帮我做一个待办事项网页"，它直接在旁边显示出来，你马上能看到效果。</div>
+</div>
+
+<div class="term-card" data-keywords="RAGFlow RAG flow">
+<div class="term-name">RAGFlow <span class="en">RAGFlow</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">RAG + Flow，RAG的流程化工具</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>专门做RAG（检索增强生成）的开源平台。知识库精度最高，适合需要从大量文档中精准查找信息的场景。但部署难度较高，适合有技术基础的人。</div>
+</div>
+
+<div class="term-card" data-keywords="RPA 机器人流程自动化 robotic process automation">
+<div class="term-name">RPA <span class="en">Robotic Process Automation</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Robotic = 机器人的，Process = 流程，Automation = 自动化。用软件机器人自动化重复操作</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>模拟人在电脑上的点击/打字操作，让软件自动完成。比如自动在闲鱼上架商品、自动回复消息。和AI工作流的区别：AI工作流靠API连接，RPA靠"模拟人操作"（像自动点击器）。</div>
+</div>
+
+<div class="term-card" data-keywords="perplexity AI搜索 搜索引擎">
+<div class="term-name">Perplexity <span class="en">Perplexity.ai</span> <span class="tag tag-platform">平台</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Perplexity = 困惑度（AI领域的专业指标，衡量模型对文本的"惊讶程度"），也指"困惑"</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI搜索引擎。你问问题，它不是给你一堆链接，而是直接给你答案+来源。就像一个"帮你读完搜索结果再总结给你"的助手。国外最火的AI搜索，国内类似产品有秘塔AI搜索。</div>
+</div>
+
+<div class="term-card" data-keywords="cursor windsurf AI编辑器 编程助手">
+<div class="term-name">Windsurf <span class="en">Windsurf / Codeium</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Windsurf = 帆板运动（乘风破浪），暗示编程如帆板般顺滑</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>Cursor的竞争对手，另一个AI编程编辑器。特点是有"Cascade"功能——AI能记住你的整个项目上下文，像真正理解你的项目一样帮你写代码。</div>
+</div>
+
+<div class="term-card" data-keywords=" playwright selenium puppeteer 浏览器自动化 爬虫">
+<div class="term-name">Playwright / Selenium <span class="en">浏览器自动化</span> <span class="tag tag-tool">工具</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Playwright = 剧作家（编写浏览器"剧本"），Selenium = 硒（化学元素，名字来源是个冷笑话）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>让电脑自动操作浏览器的工具。自动打开网页、点击按钮、填写表单、截图。你要自动化闲鱼上架，就得用这类工具。Playwright是新一代，Selenium是老牌。</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="stats">
+  📊 本文档共收录 <strong id="termCount">0</strong> 个名词 | 按 <kbd>Ctrl+F</kbd> 或使用顶部搜索框查找
+</div>
+
+<script>
+  // 统计词条数
+  const cards = document.querySelectorAll('.term-card');
+  document.getElementById('termCount').textContent = cards.length;
+
+  // 搜索功能
+  function filterTerms() {
+
+<div class="term-card" data-keywords="seed 种子 随机种子 复现">
+<div class="term-name">种子 <span class="en">Seed</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Seed = 种子。计算机中"随机种子"决定随机数的起点</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI绘画的"存档码"。同样的提示词+同样的种子=同样的图。换一个种子=风格类似但画面不同。你看到一张好看的AI图想复刻，需要知道它的种子值。</div>
+</div>
+
+<div class="term-card" data-keywords="checkpoint 检查点 大模型权重 模型文件">
+<div class="term-name">Checkpoint <span class="en">Checkpoint</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Check = 检查，Point = 点。游戏中的"存档点"。在AI中指训练好的模型权重文件</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI绘画的"基础画风包"。不同的checkpoint = 不同的基础画风（写实/动漫/油画）。就像不同的画布底色——你在动漫底色上画，出来的就是动漫风；在写实底色上画，出来就是照片风。C站（Civitai）就是分享checkpoint的社区。</div>
+</div>
+
+<div class="term-card" data-keywords="VAE 变分自编码器 variational autoencoder 解码">
+<div class="term-name">VAE <span class="en">Variational Autoencoder</span> <span class="tag tag-method">方法</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Variational = 变分的，Auto = 自动的，Encoder = 编码器。能自动学习数据分布的编码器</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>在AI绘画中，VAE是"色彩解码器"。没有VAE = 图片灰蒙蒙的（像没上色），加上VAE = 色彩鲜艳正确。就像从底片洗照片——VAE负责把潜在信息"洗"成彩色画面。</div>
+</div>
+
+<div class="term-card" data-keywords="采样器 sampler 采样步数 sampling steps 去噪">
+<div class="term-name">采样器 / 采样步数 <span class="en">Sampler / Steps</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Sampler = 采样器，Steps = 步数。扩散模型中从噪点还原图片的方法和次数</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>采样器 = "去噪算法"（Euler、DPM++等是不同的去噪方式），步数 = "去噪几轮"。步数越多 = 图片越精细但也越慢。一般20-30步就够了，100步以上基本没区别。就像磨刀：磨20下够锋利了，磨100下和20下差不多。</div>
+</div>
+
+<div class="term-card" data-keywords="CFG scale 提示词相关性 引导 scale">
+<div class="term-name">CFG Scale <span class="en">Classifier-Free Guidance Scale</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Classifier = 分类器，Free = 无/没有，Guidance = 引导，Scale = 比例/强度</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>AI绘画的"听话程度"。CFG低 = AI自由发挥（可能和你说的不一样），CFG高 = AI严格按你的描述画。一般7-12之间效果最好。太高画面会"崩"，太低会"跑题"。</div>
+</div>
+
+<div class="term-card" data-keywords="正向提示词 反向提示词 negative prompt 正反">
+<div class="term-name">正向/反向提示词 <span class="en">Positive / Negative Prompt</span> <span class="tag tag-concept">概念</span></div>
+<div class="term-etymology"><span class="label">📖 词源：</span><span class="content">Positive = 正面的（想要的），Negative = 负面的（不想要的）</span></div>
+<div class="term-explain"><span class="label">🗣️ 通俗：</span>正向提示词 = "我要什么"（如：一个美丽的花园），反向提示词 = "我不要什么"（如：没有人、没有垃圾、不模糊）。反向提示词就像"忌口"——告诉厨师你不吃什么，避免踩雷。</div>
+</div>
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    cards.forEach(card => {
+      const name = card.querySelector('.term-name').textContent.toLowerCase();
+      const keywords = card.dataset.keywords ? card.dataset.keywords.toLowerCase() : '';
+      const etymology = card.querySelector('.term-etymology') ? card.querySelector('.term-etymology').textContent.toLowerCase() : '';
+      const explain = card.querySelector('.term-explain') ? card.querySelector('.term-explain').textContent.toLowerCase() : '';
+      const all = name + ' ' + keywords + ' ' + etymology + ' ' + explain;
+      card.style.display = all.includes(query) ? '' : 'none';
+    });
+    // 隐藏空分类
+    document.querySelectorAll('.category').forEach(cat => {
+      const visible = cat.querySelectorAll('.term-card[style=""], .term-card:not([style])');
+      cat.style.display = visible.length > 0 ? '' : 'none';
+    });
+  }
+
+  // 导航高亮
+  const navLinks = document.querySelectorAll('.nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      navLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
