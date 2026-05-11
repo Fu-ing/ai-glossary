@@ -14,29 +14,99 @@
   }
   .header {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    padding: 40px 20px;
-    text-align: center;
+    padding: 20px 30px;
     border-bottom: 2px solid #0f3460;
     position: sticky;
     top: 0;
     z-index: 100;
   }
+  .header-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .qrcode-box {
+    background: white;
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .qrcode-box img {
+    width: 80px;
+    height: 80px;
+    display: block;
+  }
+  .qrcode-tip {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .header-center {
+    text-align: center;
+    flex: 1;
+  }
   .header h1 {
-    font-size: 28px;
+    font-size: 26px;
     color: #e94560;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .header p {
     color: #aaa;
-    font-size: 14px;
+    font-size: 13px;
   }
-  .search-box {
-    margin-top: 16px;
+  .header-right {
+    width: 200px;
+  }
+  .ad-box {
+    background: linear-gradient(135deg, #2a2a3e, #1e1e2e);
+    border: 2px dashed #444;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    height: 120px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 8px;
+    align-items: center;
+    transition: all 0.3s;
   }
-  .search-box input {
+  .ad-box:hover {
+    border-color: #e94560;
+    background: linear-gradient(135deg, #2e2e4e, #242438);
+  }
+  .ad-box .ad-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  .ad-box .ad-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .ad-box .ad-sub {
+    color: #888;
+    font-size: 11px;
+  }
+  .ad-box .ad-price {
+    color: #e94560;
+    font-size: 12px;
+    margin-top: 6px;
+    font-weight: bold;
+  }
+  .search-area {
+    margin-top: 14px;
+  }
+  .search-area input {
     width: 300px;
     padding: 10px 16px;
     border-radius: 20px;
@@ -46,68 +116,105 @@
     font-size: 14px;
     outline: none;
   }
-  .search-box input:focus {
+  .search-area input:focus {
     border-color: #e94560;
   }
   .nav {
-    background: #1a1a2e;
-    padding: 12px 20px;
+    background: rgba(26,26,46,0.95);
+    backdrop-filter: blur(10px);
+    padding: 14px 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
     position: sticky;
-    top: 110px;
+    top: 0;
     z-index: 99;
     border-bottom: 1px solid #222;
+    margin-top: 0;
   }
   .nav a {
     color: #aaa;
     text-decoration: none;
-    padding: 4px 12px;
-    border-radius: 14px;
+    padding: 6px 14px;
+    border-radius: 16px;
     font-size: 13px;
     border: 1px solid #333;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.02);
   }
   .nav a:hover, .nav a.active {
-    color: #e94560;
+    color: #fff;
     border-color: #e94560;
-    background: rgba(233,69,96,0.1);
+    background: rgba(233,69,96,0.2);
+    transform: translateY(-1px);
   }
   .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 24px 20px;
+  }
+  /* 背景装饰 */
+  .bg-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(233,69,96,0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(15,52,96,0.05) 0%, transparent 50%);
   }
   .category {
     margin-bottom: 40px;
   }
   .category-title {
-    font-size: 22px;
-    color: #e94560;
+    font-size: 20px;
+    color: #fff;
     margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e94560;
+    padding-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    background: linear-gradient(90deg, rgba(233,69,96,0.15), transparent);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 3px solid #e94560;
   }
   .category-title .emoji {
-    font-size: 24px;
+    font-size: 22px;
   }
   .term-card {
-    background: #1a1a2e;
+    background: rgba(26,26,46,0.8);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 12px;
-    border: 1px solid #222;
-    transition: all 0.2s;
+    border: 1px solid #2a2a3e;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
   }
   .term-card:hover {
     border-color: #e94560;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(233,69,96,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(233,69,96,0.15);
+    background: rgba(30,30,50,0.9);
+  }
+  .term-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e94560, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .term-card:hover::before {
+    opacity: 1;
   }
   .term-name {
     font-size: 20px;
@@ -178,15 +285,17 @@
   }
   .stats {
     text-align: center;
-    padding: 30px 20px;
+    padding: 40px 20px;
     color: #888;
     font-size: 14px;
-    background: linear-gradient(180deg, transparent, #1a1a2e 50%);
-    margin-top: 20px;
+    background: linear-gradient(180deg, transparent, rgba(26,26,46,0.5) 50%);
+    margin-top: 30px;
+    border-radius: 12px;
   }
   .stats strong {
     color: #e94560;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
   }
   .stats kbd {
     background: #333;
@@ -195,45 +304,142 @@
     font-size: 12px;
     color: #aaa;
   }
-  @media (max-width: 600px) {
+  /* 回到顶部按钮 */
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 44px;
+    height: 44px;
+    background: #e94560;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(233,69,96,0.3);
+  }
+  .back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(233,69,96,0.4);
+  }
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .header-left {
+      order: 1;
+    }
+    .header-center {
+      order: 2;
+    }
+    .header-right {
+      order: 3;
+      width: 100%;
+    }
+    .ad-box {
+      height: 80px;
+    }
     .header h1 { font-size: 22px; }
-    .search-box input { width: 200px; }
-    .nav { top: 100px; }
-    .term-name { font-size: 17px; }
+    .search-area input { width: 100%; }
+    .nav { top: auto; }
   }
   /* 滚动条美化 */
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: #1a1a2e; }
   ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: #555; }
-  /* 卡片悬浮效果增强 */
-  .term-card {
-    position: relative;
-    overflow: hidden;
+  /* 左侧快捷导航 */
+  .side-nav {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 98;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
-  .term-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #e94560, transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
+  .side-nav a {
+    width: 36px;
+    height: 36px;
+    background: rgba(26,26,46,0.9);
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    opacity: 0.6;
   }
-  .term-card:hover::before {
+  .side-nav a:hover {
+    background: rgba(233,69,96,0.3);
+    border-color: #e94560;
     opacity: 1;
+    transform: scale(1.1);
+  }
+  @media (max-width: 1200px) {
+    .side-nav { display: none; }
+  }
+  @media (max-width: 768px) {
+    .back-to-top { bottom: 20px; right: 20px; }
   }
 </style>
 </head>
 <body>
 
+<!-- 背景装饰 -->
+<div class="bg-decoration"></div>
+
+<!-- 左侧快捷导航 -->
+<div class="side-nav">
+  <a href="#cat1" title="基础概念">🔤</a>
+  <a href="#cat2" title="模型家族">🤖</a>
+  <a href="#cat3" title="工具平台">🛠️</a>
+  <a href="#cat4" title="技术方法">⚙️</a>
+  <a href="#cat5" title="协议接口">📡</a>
+  <a href="#cat6" title="部署运维">📦</a>
+  <a href="#cat7" title="商业应用">💼</a>
+  <a href="#cat8" title="多模态">🎨</a>
+</div>
+
 <div class="header">
-  <h1>🧠 AI圈子名词大全</h1>
-  <p>从词源到人话，一份搞懂AI黑话</p>
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="搜索名词..." oninput="filterTerms()">
+  <div class="header-content">
+    <!-- 左侧：二维码 -->
+    <div class="header-left">
+      <div class="qrcode-box">
+        <img src="qrcode.png" alt="二维码">
+      </div>
+      <div class="qrcode-tip">扫码关注</div>
+    </div>
+    
+    <!-- 中间：标题和搜索 -->
+    <div class="header-center">
+      <h1>🧠 AI圈子名词大全</h1>
+      <p>从词源到人话，一份搞懂AI黑话</p>
+      <div class="search-area">
+        <input type="text" id="searchInput" placeholder="搜索名词..." oninput="filterTerms()">
+      </div>
+    </div>
+    
+    <!-- 右侧：广告位 -->
+    <div class="header-right">
+      <div class="ad-box">
+        <div class="ad-icon">📢</div>
+        <div class="ad-title">广告位出租</div>
+        <div class="ad-sub">AI相关产品/服务推广</div>
+        <div class="ad-price">实惠 · 精准 · 高转化</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1281,6 +1487,9 @@
 
 </div>
 
+<!-- 回到顶部按钮 -->
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
 <div class="stats">
   📊 本文收录 <strong id="termCount">0</strong> 个AI名词 | 🔍 搜索或按 <kbd>Ctrl+F</kbd> 查找
 </div>
@@ -1325,11 +1534,9 @@ navLinks.forEach(link => {
 });
 </script>
 
-<!-- 页脚二维码 -->
-<footer style="background: #1a1a2e; padding: 40px 20px; text-align: center; border-top: 1px solid #333; margin-top: 40px;">
-  <p style="color: #888; margin-bottom: 16px;">扫码获取更多内容</p>
-  <img src="qrcode.png" alt="二维码" style="width: 150px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-  <p style="color: #666; font-size: 12px; margin-top: 12px;">AI圈子名词大全</p>
+<!-- 页脚 -->
+<footer style="background: #1a1a2e; padding: 30px 20px; text-align: center; border-top: 1px solid #333; margin-top: 40px;">
+  <p style="color: #666; font-size: 12px;">© 2024 AI圈子名词大全 | 让AI黑话不再神秘</p>
 </footer>
 
 </body>
