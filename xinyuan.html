@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>权威信源导航 — AI地洞</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #080810;
+    color: #d0d0e0;
+    line-height: 1.8;
+  }
+  .header {
+    background: linear-gradient(180deg, #12121f 0%, #1a1a2e 100%);
+    padding: 16px 30px;
+    border-bottom: 1px solid rgba(233,69,96,0.2);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  }
+  .header.header-hidden { transform: translateY(-100%); }
+  .header-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .site-logo {
+    font-size: 18px;
+    color: #e94560;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .site-logo:hover { color: #ff6b8a; }
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+  .nav-tab {
+    color: #777;
+    text-decoration: none;
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: all 0.25s;
+  }
+  .nav-tab:hover { color: #fff; background: rgba(233,69,96,0.15); border-color: rgba(233,69,96,0.3); }
+  .nav-tab.active { color: #fff; background: rgba(233,69,96,0.2); border-color: #e94560; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #0f0f1a;
+    border: 1px solid #2a2a3e;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .search-box:focus-within {
+    border-color: #e94560;
+    box-shadow: 0 0 0 3px rgba(233,69,96,0.15);
+  }
+  .search-box input {
+    border: none; background: transparent; color: #e0e0e0;
+    font-size: 13px; outline: none; padding: 8px 16px; width: 220px;
+  }
+  .search-box input::placeholder { color: #555; }
+  .search-btn {
+    background: rgba(233,69,96,0.15);
+    border: none; border-left: 1px solid #2a2a3e;
+    color: #e94560; padding: 8px 16px;
+    cursor: pointer; font-size: 12px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .search-btn:hover { background: #e94560; color: #fff; }
+  .search-btn-gov {
+    background: rgba(100,180,100,0.12);
+    border: none; border-left: 1px solid #2a2a3e;
+    color: #66bb66; padding: 8px 16px;
+    cursor: pointer; font-size: 12px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .search-btn-gov:hover { background: #66bb66; color: #fff; }
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(233,69,96,0.08), rgba(233,69,96,0.03));
+    border: 1px solid rgba(233,69,96,0.15);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 100px 0 32px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  @media (max-width: 700px) {
+    .banner { flex-direction: column; text-align: center; padding: 20px; }
+    .header-right { display: none; }
+  }
+  .banner-icon { font-size: 40px; flex-shrink: 0; }
+  .banner-text h2 { color: #fff; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .banner-text p { color: #888; font-size: 13px; line-height: 1.7; }
+  .banner-text strong { color: #e94560; }
+  .banner-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #888;
+  }
+  .stat-item span { color: #e94560; font-weight: 600; margin-right: 4px; }
+  /* Nav */
+  .nav {
+    background: rgba(12,12,20,0.95);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: center;
+    position: sticky; top: 0; z-index: 99;
+    border-bottom: 1px solid #1a1a2e;
+    margin-top: 0;
+  }
+  .nav a {
+    color: #777; text-decoration: none; padding: 5px 12px;
+    border-radius: 14px; font-size: 12px; border: 1px solid transparent;
+    transition: all 0.25s;
+  }
+  .nav a:hover { color: #fff; background: rgba(233,69,96,0.15); border-color: rgba(233,69,96,0.3); }
+  .nav a.active { color: #fff; background: rgba(233,69,96,0.2); border-color: #e94560; }
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .category, .source-card { scroll-margin-top: 160px; }
+  /* Category */
+  .category { margin-bottom: 40px; }
+  .cat-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .cat-icon { font-size: 22px; }
+  .cat-title {
+    font-size: 16px; color: #fff; font-weight: 600;
+    background: linear-gradient(90deg, rgba(233,69,96,0.12), transparent);
+    padding: 8px 14px;
+    border-radius: 8px;
+    border-left: 3px solid #e94560;
+    flex: 1;
+  }
+  .cat-count {
+    font-size: 11px; color: #555;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid #2a2a3e;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  /* Source cards grid */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+  }
+  @media (max-width: 600px) {
+    .sources-grid { grid-template-columns: 1fr; }
+  }
+  .source-card {
+    background: rgba(18,18,31,0.9);
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .source-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, #e94560, #ff6b8a);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .source-card:hover {
+    border-color: rgba(233,69,96,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    background: rgba(22,22,38,0.98);
+  }
+  .source-card:hover::before { opacity: 1; }
+  .source-name {
+    font-size: 14px; color: #fff; font-weight: 600;
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .source-domain {
+    font-size: 11px; color: #e94560;
+    background: rgba(233,69,96,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  .source-desc {
+    font-size: 12px; color: #777; line-height: 1.5;
+    margin-top: 4px;
+  }
+  /* Quick entries */
+  .quick-section { margin-bottom: 40px; }
+  .quick-title {
+    font-size: 14px; color: #555;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 12px; padding-left: 4px;
+  }
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .quick-card {
+    background: rgba(14,14,24,0.8);
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: inherit;
+    display: flex; align-items: center; gap: 10px;
+    transition: all 0.25s;
+  }
+  .quick-card:hover {
+    border-color: rgba(233,69,96,0.3);
+    background: rgba(22,22,38,0.9);
+    transform: translateY(-1px);
+  }
+  .quick-icon { font-size: 18px; flex-shrink: 0; }
+  .quick-info { min-width: 0; }
+  .quick-name { font-size: 13px; color: #fff; font-weight: 500; }
+  .quick-use { font-size: 11px; color: #555; margin-top: 2px; }
+  /* Back to top */
+  .back-to-top {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(233,69,96,0.9); color: #fff;
+    border: none; font-size: 18px; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(233,69,96,0.4);
+    transition: all 0.3s; z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-to-top:hover { background: #e94560; transform: scale(1.1); }
+  /* Footer */
+  footer {
+    background: #1a1a2e; padding: 24px 20px; text-align: center;
+    border-top: 1px solid #222; margin-top: 40px;
+  }
+  footer p { color: #555; font-size: 12px; }
+  footer a { color: #555; text-decoration: none; }
+  footer a:hover { color: #e94560; }
+  /* bg */
+  .bg-decoration {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(233,69,96,0.06) 0%, transparent 50%);
+  }
+</style>
+</head>
+<body>
+<div class="bg-decoration"></div>
+
+<div class="header" id="header">
+  <div class="header-content">
+    <div class="header-left">
+      <a href="index.html" class="site-logo">🕳️ AI地洞</a>
+      <div class="nav-tabs">
+        <a href="index.html" class="nav-tab">导航首页</a>
+        <a href="glossary.html" class="nav-tab">AI名词</a>
+        <a href="xinyuan.html" class="nav-tab active">权威信源</a>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索信源..." onkeypress="if(event.key==='Enter')doSearch()">
+        <button class="search-btn-gov" onclick="doGovSearch()" title="在官方信源中搜索">只搜官方</button>
+        <button class="search-btn" onclick="doSearch()" title="在所有信源中搜索">搜索</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Banner -->
+<div class="container">
+<div class="banner">
+  <div class="banner-icon">🏛️</div>
+  <div class="banner-text">
+    <h2>权威信源导航</h2>
+    <p>122个官方信息源，覆盖政府政务、法律法规、医疗健康、金融财经等9大领域。<br>只搜 <strong>.gov</strong> <strong>.org</strong>，告别搜索引擎广告与AI幻觉。</p>
+    <div class="banner-stats">
+      <div class="stat-item"><span>122</span> 个信源</div>
+      <div class="stat-item"><span>9</span> 大分类</div>
+      <div class="stat-item"><span>34</span> 个省级政府</div>
+      <div class="stat-item"><span>43+</span> 个部委覆盖</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="nav">
+  <a href="#cat1">🏛️ 政府政务(中央)</a>
+  <a href="#cat2">🏛️ 政府政务(地方)</a>
+  <a href="#cat3">⚖️ 法律法规</a>
+  <a href="#cat4">🏥 医疗健康</a>
+  <a href="#cat5">📰 官方媒体</a>
+  <a href="#cat6">💰 金融财经</a>
+  <a href="#cat7">🚄 出行交通</a>
+  <a href="#cat8">🏠 生活办事</a>
+  <a href="#cat9">💻 技术文档</a>
+  <a href="#quick">⚡ 直达入口</a>
+</div>
+
+<div class="container">
+
+<!-- 快捷入口 -->
+<div class="quick-section" id="quick">
+<div class="quick-title">⚡ 直达入口（常用）</div>
+<div class="quick-grid">
+  <a href="https://gjzwfw.www.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🏠</span><div class="quick-info"><div class="quick-name">国家政务服务平台</div><div class="quick-use">一网通办总入口</div></div></a>
+  <a href="https://12306.cn" target="_blank" class="quick-card"><span class="quick-icon">🚄</span><div class="quick-info"><div class="quick-name">12306</div><div class="quick-use">买火车票</div></div></a>
+  <a href="https://weather.com.cn" target="_blank" class="quick-card"><span class="quick-icon">🌤️</span><div class="quick-info"><div class="quick-name">中国天气</div><div class="quick-use">查天气</div></div></a>
+  <a href="https://122.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🚗</span><div class="quick-info"><div class="quick-name">交管12123</div><div class="quick-use">查违章/驾照</div></div></a>
+  <a href="https://12333.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🏦</span><div class="quick-info"><div class="quick-name">社保查询</div><div class="quick-use">查社保</div></div></a>
+  <a href="https://nhsa.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🏥</span><div class="quick-info"><div class="quick-name">医保查询</div><div class="quick-use">医保报销</div></div></a>
+  <a href="https://chsi.com.cn" target="_blank" class="quick-card"><span class="quick-icon">🎓</span><div class="quick-info"><div class="quick-name">学信网</div><div class="quick-use">查学历</div></div></a>
+  <a href="https://yz.chsi.com.cn" target="_blank" class="quick-card"><span class="quick-icon">📚</span><div class="quick-info"><div class="quick-name">研招网</div><div class="quick-use">考研报名</div></div></a>
+  <a href="https://flk.npc.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">⚖️</span><div class="quick-info"><div class="quick-name">法律法规库</div><div class="quick-use">查法律原文</div></div></a>
+  <a href="https://wenshu.court.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">📋</span><div class="quick-info"><div class="quick-name">裁判文书网</div><div class="quick-use">查判决书</div></div></a>
+  <a href="https://gsxt.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🏢</span><div class="quick-info"><div class="quick-name">查企业</div><div class="quick-use">查公司真假</div></div></a>
+  <a href="https://12315.cn" target="_blank" class="quick-card"><span class="quick-icon">🛡️</span><div class="quick-info"><div class="quick-name">12315投诉</div><div class="quick-use">举报假货</div></div></a>
+  <a href="https://nia.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🛂</span><div class="quick-info"><div class="quick-name">移民局</div><div class="quick-use">办护照签证</div></div></a>
+  <a href="https://pbccrc.org.cn" target="_blank" class="quick-card"><span class="quick-icon">💳</span><div class="quick-info"><div class="quick-name">征信中心</div><div class="quick-use">查个人征信</div></div></a>
+  <a href="https://nmpa.gov.cn" target="_blank" class="quick-card"><span class="quick-icon">💊</span><div class="quick-info"><div class="quick-name">药品查询</div><div class="quick-use">查药品备案</div></div></a>
+  <a href="https://gov.cn" target="_blank" class="quick-card"><span class="quick-icon">🏛️</span><div class="quick-info"><div class="quick-name">中国政府网</div><div class="quick-use">国家政策</div></div></a>
+</div>
+</div>
+
+<!-- 1. 政府政务（中央） -->
+<div class="category" id="cat1">
+<div class="cat-header">
+  <span class="cat-icon">🏛️</span>
+  <div class="cat-title">政府政务（中央）</div>
+  <span class="cat-count">22个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.gov.cn" target="_blank" class="source-card"><div class="source-name">中国政府网 <span class="source-domain">gov.cn</span></div><div class="source-desc">国务院信息、政策发布</div></a>
+  <a href="https://gjzwfw.www.gov.cn" target="_blank" class="source-card"><div class="source-name">国家政务服务平台 <span class="source-domain">gjzwfw</span></div><div class="source-desc">一网通办，43个部门1391项服务</div></a>
+  <a href="https://www.npc.gov.cn" target="_blank" class="source-card"><div class="source-name">全国人大 <span class="source-domain">npc.gov.cn</span></div><div class="source-desc">法律草案、立法动态</div></a>
+  <a href="https://www.stats.gov.cn" target="_blank" class="source-card"><div class="source-name">国家统计局 <span class="source-domain">stats.gov.cn</span></div><div class="source-desc">GDP、CPI、人口等数据</div></a>
+  <a href="https://data.stats.gov.cn" target="_blank" class="source-card"><div class="source-name">国家数据 <span class="source-domain">data.stats</span></div><div class="source-desc">统计数据可视化查询</div></a>
+  <a href="https://www.ndrc.gov.cn" target="_blank" class="source-card"><div class="source-name">国家发改委 <span class="source-domain">ndrc.gov.cn</span></div><div class="source-desc">定价、规划、重大项目</div></a>
+  <a href="https://www.mof.gov.cn" target="_blank" class="source-card"><div class="source-name">财政部 <span class="source-domain">mof.gov.cn</span></div><div class="source-desc">财政政策、预算</div></a>
+  <a href="https://www.chinatax.gov.cn" target="_blank" class="source-card"><div class="source-name">税务总局 <span class="source-domain">chinatax</span></div><div class="source-desc">税率、申报、政策解读</div></a>
+  <a href="https://www.mohrss.gov.cn" target="_blank" class="source-card"><div class="source-name">人社部 <span class="source-domain">mohrss.gov.cn</span></div><div class="source-desc">就业、社保、工资</div></a>
+  <a href="https://www.moe.gov.cn" target="_blank" class="source-card"><div class="source-name">教育部 <span class="source-domain">moe.gov.cn</span></div><div class="source-desc">教育政策、高考</div></a>
+  <a href="https://www.most.gov.cn" target="_blank" class="source-card"><div class="source-name">科技部 <span class="source-domain">most.gov.cn</span></div><div class="source-desc">科研政策、项目申报</div></a>
+  <a href="https://www.mofcom.gov.cn" target="_blank" class="source-card"><div class="source-name">商务部 <span class="source-domain">mofcom.gov.cn</span></div><div class="source-desc">贸易政策、消费数据</div></a>
+  <a href="https://www.mct.gov.cn" target="_blank" class="source-card"><div class="source-name">文旅部 <span class="source-domain">mct.gov.cn</span></div><div class="source-desc">旅游政策、景区管理</div></a>
+  <a href="https://www.mee.gov.cn" target="_blank" class="source-card"><div class="source-name">生态环境部 <span class="source-domain">mee.gov.cn</span></div><div class="source-desc">环保、空气质量</div></a>
+  <a href="https://www.mohurd.gov.cn" target="_blank" class="source-card"><div class="source-name">住建部 <span class="source-domain">mohurd.gov.cn</span></div><div class="source-desc">房地产政策、公积金</div></a>
+  <a href="https://www.mwr.gov.cn" target="_blank" class="source-card"><div class="source-name">水利部 <span class="source-domain">mwr.gov.cn</span></div><div class="source-desc">水资源、防汛</div></a>
+  <a href="https://www.moa.gov.cn" target="_blank" class="source-card"><div class="source-name">农业农村部 <span class="source-domain">moa.gov.cn</span></div><div class="source-desc">农业补贴、乡村振兴</div></a>
+  <a href="https://www.mva.gov.cn" target="_blank" class="source-card"><div class="source-name">退役军人事务部 <span class="source-domain">mva.gov.cn</span></div><div class="source-desc">退役安置、优抚</div></a>
+  <a href="https://www.mem.gov.cn" target="_blank" class="source-card"><div class="source-name">应急管理部 <span class="source-domain">mem.gov.cn</span></div><div class="source-desc">灾害预警、安全生产</div></a>
+  <a href="https://www.mnr.gov.cn" target="_blank" class="source-card"><div class="source-name">自然资源部 <span class="source-domain">mnr.gov.cn</span></div><div class="source-desc">不动产登记、土地</div></a>
+  <a href="https://www.customs.gov.cn" target="_blank" class="source-card"><div class="source-name">海关总署 <span class="source-domain">customs.gov.cn</span></div><div class="source-desc">出入境物品、关税</div></a>
+  <a href="https://www.samr.gov.cn" target="_blank" class="source-card"><div class="source-name">市场监管总局 <span class="source-domain">samr.gov.cn</span></div><div class="source-desc">消费品召回、食品安全</div></a>
+  <a href="https://www.cac.gov.cn" target="_blank" class="source-card"><div class="source-name">中央网信办 <span class="source-domain">cac.gov.cn</span></div><div class="source-desc">网络安全、互联网治理</div></a>
+</div>
+</div>
+
+<!-- 2. 政府政务（地方） -->
+<div class="category" id="cat2">
+<div class="cat-header">
+  <span class="cat-icon">🏛️</span>
+  <div class="cat-title">政府政务（地方 · 34个省级行政区）</div>
+  <span class="cat-count">36个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.beijing.gov.cn" target="_blank" class="source-card"><div class="source-name">北京市政府 <span class="source-domain">beijing.gov.cn</span></div></a>
+  <a href="https://www.tj.gov.cn" target="_blank" class="source-card"><div class="source-name">天津市政府 <span class="source-domain">tj.gov.cn</span></div></a>
+  <a href="https://www.shanghai.gov.cn" target="_blank" class="source-card"><div class="source-name">上海市政府 <span class="source-domain">shanghai.gov.cn</span></div></a>
+  <a href="https://www.cq.gov.cn" target="_blank" class="source-card"><div class="source-name">重庆市政府 <span class="source-domain">cq.gov.cn</span></div></a>
+  <a href="https://www.hebei.gov.cn" target="_blank" class="source-card"><div class="source-name">河北省政府 <span class="source-domain">hebei.gov.cn</span></div></a>
+  <a href="https://www.shanxigov.cn" target="_blank" class="source-card"><div class="source-name">山西省政府 <span class="source-domain">shanxigov.cn</span></div></a>
+  <a href="https://www.ln.gov.cn" target="_blank" class="source-card"><div class="source-name">辽宁省政府 <span class="source-domain">ln.gov.cn</span></div></a>
+  <a href="https://www.jl.gov.cn" target="_blank" class="source-card"><div class="source-name">吉林省政府 <span class="source-domain">jl.gov.cn</span></div></a>
+  <a href="https://www.hlj.gov.cn" target="_blank" class="source-card"><div class="source-name">黑龙江省政府 <span class="source-domain">hlj.gov.cn</span></div></a>
+  <a href="https://www.js.gov.cn" target="_blank" class="source-card"><div class="source-name">江苏省政府 <span class="source-domain">js.gov.cn</span></div></a>
+  <a href="https://www.zhejiang.gov.cn" target="_blank" class="source-card"><div class="source-name">浙江省政府 <span class="source-domain">zhejiang.gov.cn</span></div></a>
+  <a href="https://www.ah.gov.cn" target="_blank" class="source-card"><div class="source-name">安徽省政府 <span class="source-domain">ah.gov.cn</span></div></a>
+  <a href="https://www.fujian.gov.cn" target="_blank" class="source-card"><div class="source-name">福建省政府 <span class="source-domain">fujian.gov.cn</span></div></a>
+  <a href="https://www.jiangxi.gov.cn" target="_blank" class="source-card"><div class="source-name">江西省政府 <span class="source-domain">jiangxi.gov.cn</span></div></a>
+  <a href="https://www.shandong.gov.cn" target="_blank" class="source-card"><div class="source-name">山东省政府 <span class="source-domain">shandong.gov.cn</span></div></a>
+  <a href="https://www.henan.gov.cn" target="_blank" class="source-card"><div class="source-name">河南省政府 <span class="source-domain">henan.gov.cn</span></div></a>
+  <a href="https://www.hubei.gov.cn" target="_blank" class="source-card"><div class="source-name">湖北省政府 <span class="source-domain">hubei.gov.cn</span></div></a>
+  <a href="https://www.hunan.gov.cn" target="_blank" class="source-card"><div class="source-name">湖南省政府 <span class="source-domain">hunan.gov.cn</span></div></a>
+  <a href="https://www.gd.gov.cn" target="_blank" class="source-card"><div class="source-name">广东省政府 <span class="source-domain">gd.gov.cn</span></div></a>
+  <a href="https://www.hainan.gov.cn" target="_blank" class="source-card"><div class="source-name">海南省政府 <span class="source-domain">hainan.gov.cn</span></div></a>
+  <a href="https://www.sc.gov.cn" target="_blank" class="source-card"><div class="source-name">四川省政府 <span class="source-domain">sc.gov.cn</span></div></a>
+  <a href="https://www.gzgov.gov.cn" target="_blank" class="source-card"><div class="source-name">贵州省政府 <span class="source-domain">gzgov.gov.cn</span></div></a>
+  <a href="https://www.yn.gov.cn" target="_blank" class="source-card"><div class="source-name">云南省政府 <span class="source-domain">yn.gov.cn</span></div></a>
+  <a href="https://www.shaanxi.gov.cn" target="_blank" class="source-card"><div class="source-name">陕西省政府 <span class="source-domain">shaanxi.gov.cn</span></div></a>
+  <a href="https://www.gansu.gov.cn" target="_blank" class="source-card"><div class="source-name">甘肃省政府 <span class="source-domain">gansu.gov.cn</span></div></a>
+  <a href="https://www.qh.gov.cn" target="_blank" class="source-card"><div class="source-name">青海省政府 <span class="source-domain">qh.gov.cn</span></div></a>
+  <a href="https://www.nmg.gov.cn" target="_blank" class="source-card"><div class="source-name">内蒙古自治区 <span class="source-domain">nmg.gov.cn</span></div></a>
+  <a href="https://www.gxzf.gov.cn" target="_blank" class="source-card"><div class="source-name">广西壮族自治区 <span class="source-domain">gxzf.gov.cn</span></div></a>
+  <a href="https://www.xizang.gov.cn" target="_blank" class="source-card"><div class="source-name">西藏自治区 <span class="source-domain">xizang.gov.cn</span></div></a>
+  <a href="https://www.nx.gov.cn" target="_blank" class="source-card"><div class="source-name">宁夏回族自治区 <span class="source-domain">nx.gov.cn</span></div></a>
+  <a href="https://www.xinjiang.gov.cn" target="_blank" class="source-card"><div class="source-name">新疆维吾尔自治区 <span class="source-domain">xinjiang.gov.cn</span></div></a>
+  <a href="https://www.gov.hk" target="_blank" class="source-card"><div class="source-name">香港特别行政区 <span class="source-domain">gov.hk</span></div></a>
+  <a href="https://www.macau.gov.mo" target="_blank" class="source-card"><div class="source-name">澳门特别行政区 <span class="source-domain">macau.gov.mo</span></div></a>
+</div>
+</div>
+
+<!-- 3. 法律法规 -->
+<div class="category" id="cat3">
+<div class="cat-header">
+  <span class="cat-icon">⚖️</span>
+  <div class="cat-title">法律法规</div>
+  <span class="cat-count">8个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://flk.npc.gov.cn" target="_blank" class="source-card"><div class="source-name">国家法律法规数据库 <span class="source-domain">flk.npc.gov.cn</span></div><div class="source-desc">全部现行法律原文</div></a>
+  <a href="https://www.gov.cn/zhengce" target="_blank" class="source-card"><div class="source-name">国务院政策文件 <span class="source-domain">gov.cn/zhengce</span></div><div class="source-desc">中央政策文件</div></a>
+  <a href="https://www.court.gov.cn" target="_blank" class="source-card"><div class="source-name">最高人民法院 <span class="source-domain">court.gov.cn</span></div><div class="source-desc">司法解释、典型案例</div></a>
+  <a href="https://www.spp.gov.cn" target="_blank" class="source-card"><div class="source-name">最高人民检察院 <span class="source-domain">spp.gov.cn</span></div><div class="source-desc">检察政策</div></a>
+  <a href="https://www.moj.gov.cn" target="_blank" class="source-card"><div class="source-name">司法部 <span class="source-domain">moj.gov.cn</span></div><div class="source-desc">法律服务、公证</div></a>
+  <a href="https://www.chinacourt.org" target="_blank" class="source-card"><div class="source-name">中国法院网 <span class="source-domain">chinacourt.org</span></div><div class="source-desc">判例查询</div></a>
+  <a href="https://wenshu.court.gov.cn" target="_blank" class="source-card"><div class="source-name">中国裁判文书网 <span class="source-domain">wenshu.court</span></div><div class="source-desc">查判决书</div></a>
+  <a href="https://zxgk.court.gov.cn" target="_blank" class="source-card"><div class="source-name">中国执行信息公开网 <span class="source-domain">zxgk.court</span></div><div class="source-desc">查老赖、被执行人</div></a>
+  <a href="https://www.12348.gov.cn" target="_blank" class="source-card"><div class="source-name">中国法律服务网 <span class="source-domain">12348.gov.cn</span></div><div class="source-desc">免费法律咨询、法条查询</div></a>
+</div>
+</div>
+
+<!-- 4. 医疗健康 -->
+<div class="category" id="cat4">
+<div class="cat-header">
+  <span class="cat-icon">🏥</span>
+  <div class="cat-title">医疗健康</div>
+  <span class="cat-count">7个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.nhc.gov.cn" target="_blank" class="source-card"><div class="source-name">国家卫健委 <span class="source-domain">nhc.gov.cn</span></div><div class="source-desc">疫情、医疗机构、健康政策</div></a>
+  <a href="https://www.chinacdc.cn" target="_blank" class="source-card"><div class="source-name">中国疾控中心 <span class="source-domain">chinacdc.cn</span></div><div class="source-desc">传染病、疫苗指南</div></a>
+  <a href="https://www.nmpa.gov.cn" target="_blank" class="source-card"><div class="source-name">国家药监局 <span class="source-domain">nmpa.gov.cn</span></div><div class="source-desc">药品/医疗器械/化妆品查询</div></a>
+  <a href="https://www.nhsa.gov.cn" target="_blank" class="source-card"><div class="source-name">国家医保局 <span class="source-domain">nhsa.gov.cn</span></div><div class="source-desc">医保报销、药品目录、异地就医</div></a>
+  <a href="https://www.who.int" target="_blank" class="source-card"><div class="source-name">世界卫生组织 <span class="source-domain">who.int</span></div><div class="source-desc">全球健康指南（英文）</div></a>
+  <a href="https://www.cdc.gov" target="_blank" class="source-card"><div class="source-name">美国CDC <span class="source-domain">cdc.gov</span></div><div class="source-desc">传染病数据（英文）</div></a>
+  <a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank" class="source-card"><div class="source-name">PubMed <span class="source-domain">ncbi.nlm.nih.gov</span></div><div class="source-desc">医学论文检索</div></a>
+  <a href="https://www.mayoclinic.org" target="_blank" class="source-card"><div class="source-name">梅奥诊所 <span class="source-domain">mayoclinic.org</span></div><div class="source-desc">疾病科普（英文，质量极高）</div></a>
+</div>
+</div>
+
+<!-- 5. 官方媒体 -->
+<div class="category" id="cat5">
+<div class="cat-header">
+  <span class="cat-icon">📰</span>
+  <div class="cat-title">官方媒体</div>
+  <span class="cat-count">7个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.xinhuanet.com" target="_blank" class="source-card"><div class="source-name">新华社 <span class="source-domain">xinhuanet.com</span></div><div class="source-desc">国家通讯社</div></a>
+  <a href="https://www.people.com.cn" target="_blank" class="source-card"><div class="source-name">人民网 <span class="source-domain">people.com.cn</span></div><div class="source-desc">人民日报</div></a>
+  <a href="https://www.cctv.com" target="_blank" class="source-card"><div class="source-name">央视网 <span class="source-domain">cctv.com</span></div><div class="source-desc">中央电视台</div></a>
+  <a href="https://www.cnr.cn" target="_blank" class="source-card"><div class="source-name">央广网 <span class="source-domain">cnr.cn</span></div><div class="source-desc">中央人民广播电台</div></a>
+  <a href="https://www.gmw.cn" target="_blank" class="source-card"><div class="source-name">光明网 <span class="source-domain">gmw.cn</span></div><div class="source-desc">光明日报</div></a>
+  <a href="https://www.chinadaily.com.cn" target="_blank" class="source-card"><div class="source-name">中国日报 <span class="source-domain">chinadaily.com.cn</span></div><div class="source-desc">英文官方媒体</div></a>
+  <a href="https://www.thepaper.cn" target="_blank" class="source-card"><div class="source-name">澎湃新闻 <span class="source-domain">thepaper.cn</span></div><div class="source-desc">深度报道</div></a>
+  <a href="https://www.caixin.com" target="_blank" class="source-card"><div class="source-name">财新 <span class="source-domain">caixin.com</span></div><div class="source-desc">财经深度</div></a>
+</div>
+</div>
+
+<!-- 6. 金融财经 -->
+<div class="category" id="cat6">
+<div class="cat-header">
+  <span class="cat-icon">💰</span>
+  <div class="cat-title">金融财经</div>
+  <span class="cat-count">10个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.pbc.gov.cn" target="_blank" class="source-card"><div class="source-name">中国人民银行 <span class="source-domain">pbc.gov.cn</span></div><div class="source-desc">利率、货币政策</div></a>
+  <a href="https://www.csrc.gov.cn" target="_blank" class="source-card"><div class="source-name">证监会 <span class="source-domain">csrc.gov.cn</span></div><div class="source-desc">股市监管、上市公司</div></a>
+  <a href="https://www.cbirc.gov.cn" target="_blank" class="source-card"><div class="source-name">银保监会 <span class="source-domain">cbirc.gov.cn</span></div><div class="source-desc">银行、保险监管</div></a>
+  <a href="https://www.safe.gov.cn" target="_blank" class="source-card"><div class="source-name">国家外汇局 <span class="source-domain">safe.gov.cn</span></div><div class="source-desc">汇率政策</div></a>
+  <a href="https://www.pbccrc.org.cn" target="_blank" class="source-card"><div class="source-name">征信中心 <span class="source-domain">pbccrc.org.cn</span></div><div class="source-desc">查个人征信报告</div></a>
+  <a href="https://www.sse.com.cn" target="_blank" class="source-card"><div class="source-name">上海证券交易所 <span class="source-domain">sse.com.cn</span></div><div class="source-desc">沪市行情</div></a>
+  <a href="https://www.szse.cn" target="_blank" class="source-card"><div class="source-name">深圳证券交易所 <span class="source-domain">szse.cn</span></div><div class="source-desc">深市行情</div></a>
+  <a href="https://www.amac.org.cn" target="_blank" class="source-card"><div class="source-name">基金业协会 <span class="source-domain">amac.org.cn</span></div><div class="source-desc">基金备案查询</div></a>
+  <a href="https://www.nafmii.org.cn" target="_blank" class="source-card"><div class="source-name">交易商协会 <span class="source-domain">nafmii.org.cn</span></div><div class="source-desc">债券市场</div></a>
+</div>
+</div>
+
+<!-- 7. 出行交通 -->
+<div class="category" id="cat7">
+<div class="cat-header">
+  <span class="cat-icon">🚄</span>
+  <div class="cat-title">出行交通</div>
+  <span class="cat-count">7个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.12306.cn" target="_blank" class="source-card"><div class="source-name">中国铁路 <span class="source-domain">12306.cn</span></div><div class="source-desc">火车票、时刻表、余票</div></a>
+  <a href="https://www.caac.gov.cn" target="_blank" class="source-card"><div class="source-name">民航局 <span class="source-domain">caac.gov.cn</span></div><div class="source-desc">航班政策、延误规定</div></a>
+  <a href="https://www.weather.com.cn" target="_blank" class="source-card"><div class="source-name">中国天气网 <span class="source-domain">weather.com.cn</span></div><div class="source-desc">天气查询（气象局旗下）</div></a>
+  <a href="https://www.cma.gov.cn" target="_blank" class="source-card"><div class="source-name">中国气象局 <span class="source-domain">cma.gov.cn</span></div><div class="source-desc">天气预报、预警</div></a>
+  <a href="https://www.mot.gov.cn" target="_blank" class="source-card"><div class="source-name">交通运输部 <span class="source-domain">mot.gov.cn</span></div><div class="source-desc">公路、水运政策</div></a>
+  <a href="https://www.122.gov.cn" target="_blank" class="source-card"><div class="source-name">交管12123平台 <span class="source-domain">122.gov.cn</span></div><div class="source-desc">驾照、违章、机动车业务</div></a>
+  <a href="https://www.msa.gov.cn" target="_blank" class="source-card"><div class="source-name">海事局 <span class="source-domain">msa.gov.cn</span></div><div class="source-desc">船舶、水上安全</div></a>
+  <a href="https://www.mps.gov.cn" target="_blank" class="source-card"><div class="source-name">公安部 <span class="source-domain">mps.gov.cn</span></div><div class="source-desc">交规、出入境管理</div></a>
+</div>
+</div>
+
+<!-- 8. 生活办事 -->
+<div class="category" id="cat8">
+<div class="cat-header">
+  <span class="cat-icon">🏠</span>
+  <div class="cat-title">生活办事</div>
+  <span class="cat-count">20个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://www.12333.gov.cn" target="_blank" class="source-card"><div class="source-name">国家社保公共服务平台 <span class="source-domain">12333.gov.cn</span></div><div class="source-desc">社保查询、转移</div></a>
+  <a href="https://si.12333.gov.cn" target="_blank" class="source-card"><div class="source-name">社保网上查询 <span class="source-domain">si.12333.gov.cn</span></div><div class="source-desc">参保证明、异地就医备案</div></a>
+  <a href="https://www.chsi.com.cn" target="_blank" class="source-card"><div class="source-name">学信网 <span class="source-domain">chsi.com.cn</span></div><div class="source-desc">学历认证、学籍查询</div></a>
+  <a href="https://yz.chsi.com.cn" target="_blank" class="source-card"><div class="source-name">研招网 <span class="source-domain">yz.chsi.com.cn</span></div><div class="source-desc">考研报名、成绩查询</div></a>
+  <a href="https://gaokao.chsi.com.cn" target="_blank" class="source-card"><div class="source-name">阳光高考 <span class="source-domain">gaokao.chsi.com.cn</span></div><div class="source-desc">高考招生、志愿填报</div></a>
+  <a href="https://www.neea.edu.cn" target="_blank" class="source-card"><div class="source-name">中国教育考试网 <span class="source-domain">neea.edu.cn</span></div><div class="source-desc">四六级、雅思、托福等</div></a>
+  <a href="https://www.gsxt.gov.cn" target="_blank" class="source-card"><div class="source-name">企业信用信息公示系统 <span class="source-domain">gsxt.gov.cn</span></div><div class="source-desc">查公司真假、经营异常</div></a>
+  <a href="https://www.12315.cn" target="_blank" class="source-card"><div class="source-name">全国12315平台 <span class="source-domain">12315.cn</span></div><div class="source-desc">投诉举报、消费维权</div></a>
+  <a href="https://www.mca.gov.cn" target="_blank" class="source-card"><div class="source-name">民政部 <span class="source-domain">mca.gov.cn</span></div><div class="source-desc">婚姻、社会组织、低保</div></a>
+  <a href="https://www.nia.gov.cn" target="_blank" class="source-card"><div class="source-name">国家移民局 <span class="source-domain">nia.gov.cn</span></div><div class="source-desc">护照、签证、出入境</div></a>
+  <a href="https://zwfw.mps.gov.cn" target="_blank" class="source-card"><div class="source-name">公安部互联网+政务 <span class="source-domain">zwfw.mps.gov.cn</span></div><div class="source-desc">户籍、身份证、出入境</div></a>
+  <a href="https://www.11185.cn" target="_blank" class="source-card"><div class="source-name">中国邮政 <span class="source-domain">11185.cn</span></div><div class="source-desc">快递查询</div></a>
+  <a href="https://www.cpta.com.cn" target="_blank" class="source-card"><div class="source-name">中国人事考试网 <span class="source-domain">cpta.com.cn</span></div><div class="source-desc">职业资格考试报名、查证</div></a>
+  <a href="https://www.osta.org.cn" target="_blank" class="source-card"><div class="source-name">技能人才评价工作网 <span class="source-domain">osta.org.cn</span></div><div class="source-desc">职业技能证书查询</div></a>
+  <a href="http://job.mohrss.gov.cn" target="_blank" class="source-card"><div class="source-name">中国公共招聘网 <span class="source-domain">job.mohrss.gov.cn</span></div><div class="source-desc">官方招聘信息</div></a>
+  <a href="https://www.12377.cn" target="_blank" class="source-card"><div class="source-name">互联网违法举报中心 <span class="source-domain">12377.cn</span></div><div class="source-desc">网络违法举报</div></a>
+  <a href="https://www.12321.cn" target="_blank" class="source-card"><div class="source-name">网络不良信息举报 <span class="source-domain">12321.cn</span></div><div class="source-desc">垃圾短信、骚扰电话举报</div></a>
+  <a href="https://hlwtsxt.miit.gov.cn" target="_blank" class="source-card"><div class="source-name">互联网信息服务投诉 <span class="source-domain">miit.gov.cn</span></div><div class="source-desc">电信运营商投诉</div></a>
+</div>
+</div>
+
+<!-- 9. 技术文档 -->
+<div class="category" id="cat9">
+<div class="cat-header">
+  <span class="cat-icon">💻</span>
+  <div class="cat-title">技术文档</div>
+  <span class="cat-count">7个</span>
+</div>
+<div class="sources-grid">
+  <a href="https://docs.python.org" target="_blank" class="source-card"><div class="source-name">Python官方文档 <span class="source-domain">docs.python.org</span></div></a>
+  <a href="https://developer.mozilla.org" target="_blank" class="source-card"><div class="source-name">MDN <span class="source-domain">developer.mozilla.org</span></div><div class="source-desc">Web开发百科</div></a>
+  <a href="https://stackoverflow.com" target="_blank" class="source-card"><div class="source-name">Stack Overflow <span class="source-domain">stackoverflow.com</span></div><div class="source-desc">编程问答</div></a>
+  <a href="https://react.dev" target="_blank" class="source-card"><div class="source-name">React官方文档 <span class="source-domain">react.dev</span></div></a>
+  <a href="https://vuejs.org" target="_blank" class="source-card"><div class="source-name">Vue.js官方文档 <span class="source-domain">vuejs.org</span></div></a>
+  <a href="https://docs.docker.com" target="_blank" class="source-card"><div class="source-name">Docker文档 <span class="source-domain">docs.docker.com</span></div><div class="source-desc">容器技术</div></a>
+  <a href="https://docs.github.com" target="_blank" class="source-card"><div class="source-name">GitHub文档 <span class="source-domain">docs.github.com</span></div></a>
+</div>
+</div>
+
+</div>
+
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<footer>
+  <p>© 2024 AI地洞 · <a href="index.html">导航首页</a> · <a href="glossary.html">AI名词</a> · <a href="xinyuan.html">权威信源</a></p>
+</footer>
+
+<script>
+// 搜索功能：site:限定搜索
+const sites = [
+  'gov.cn','www.gov.cn','gjzwfw','stats.gov.cn','data.stats.gov.cn',
+  'ndrc.gov.cn','mof.gov.cn','chinatax.gov.cn','mohrss.gov.cn','moe.gov.cn',
+  'most.gov.cn','mofcom.gov.cn','mct.gov.cn','mee.gov.cn','mohurd.gov.cn',
+  'mwr.gov.cn','moa.gov.cn','mem.gov.cn','mnr.gov.cn','customs.gov.cn',
+  'samr.gov.cn','npc.gov.cn','flk.npc.gov.cn','court.gov.cn','wenshu.court.gov.cn',
+  'nhc.gov.cn','chinacdc.cn','nmpa.gov.cn','nhsa.gov.cn',
+  'pbc.gov.cn','csrc.gov.cn','cbirc.gov.cn','pbccrc.org.cn',
+  'sse.com.cn','szse.cn','amac.org.cn','nafmii.org.cn',
+  '12306.cn','caac.gov.cn','weather.com.cn','cma.gov.cn','mot.gov.cn','122.gov.cn',
+  '12333.gov.cn','chsi.com.cn','yz.chsi.com.cn','gaokao.chsi.com.cn','neea.edu.cn',
+  'gsxt.gov.cn','12315.cn','nia.gov.cn','11185.cn','cpta.com.cn','osta.org.cn',
+  '12348.gov.cn','12377.cn','12321.cn',
+  'xinhuanet.com','people.com.cn','cctv.com','cnr.cn','gmw.cn',
+  'chinadaily.com.cn','thepaper.cn','caixin.com',
+  'who.int','cdc.gov','mayoclinic.org','pubmed.ncbi.nlm.nih.gov',
+  'customs.gov.cn','cac.gov.cn','pbccrc.org.cn',
+  'gov.hk','macau.gov.mo',
+  'beijing.gov.cn','tj.gov.cn','shanghai.gov.cn','cq.gov.cn',
+  'hebei.gov.cn','shanxigov.cn','ln.gov.cn','jl.gov.cn','hlj.gov.cn',
+  'js.gov.cn','zhejiang.gov.cn','ah.gov.cn','fujian.gov.cn',
+  'jiangxi.gov.cn','shandong.gov.cn','henan.gov.cn','hubei.gov.cn',
+  'hunan.gov.cn','gd.gov.cn','hainan.gov.cn','sc.gov.cn',
+  'gzgov.gov.cn','yn.gov.cn','shaanxi.gov.cn','gansu.gov.cn','qh.gov.cn',
+  'nmg.gov.cn','gxzf.gov.cn','xizang.gov.cn','nx.gov.cn','xinjiang.gov.cn',
+  'docs.python.org','developer.mozilla.org','stackoverflow.com',
+  'react.dev','vuejs.org','docs.docker.com','docs.github.com'
+];
+
+function getSiteFilter() {
+  return sites.map(s => 'site:' + s).join(' OR ');
+}
+
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  window.open('https://www.bing.com/search?q=' + encodeURIComponent(q + ' ' + getSiteFilter()), '_blank');
+}
+
+function doGovSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  // 只搜索 gov.cn 和组织类网站
+  const govSites = ['gov.cn','npc.gov.cn','court.gov.cn','spp.gov.cn','moj.gov.cn',
+    '12348.gov.cn','nhc.gov.cn','chinacdc.cn','nmpa.gov.cn','nhsa.gov.cn',
+    'who.int','cdc.gov','mayoclinic.org','pbccrc.org.cn',
+    '12306.cn','weather.com.cn','12333.gov.cn','12315.cn','12377.cn',
+    '12348.gov.cn','flk.npc.gov.cn','pbc.gov.cn','csrc.gov.cn'];
+  const govFilter = govSites.map(s => 'site:' + s).join(' OR ');
+  window.open('https://www.bing.com/search?q=' + encodeURIComponent(q + ' ' + govFilter), '_blank');
+}
+
+// 页面内搜索
+function filterCards() {
+  const query = document.getElementById('pageSearch') ? document.getElementById('pageSearch').value.toLowerCase() : '';
+  if (!query) {
+    document.querySelectorAll('.source-card, .quick-card').forEach(c => c.style.display = '');
+    document.querySelectorAll('.category').forEach(c => c.style.display = '');
+    document.querySelectorAll('.quick-section').forEach(s => s.style.display = '');
+    return;
+  }
+  document.querySelectorAll('.source-card').forEach(c => {
+    const name = c.querySelector('.source-name').textContent.toLowerCase();
+    const desc = c.querySelector('.source-desc') ? c.querySelector('.source-desc').textContent.toLowerCase() : '';
+    c.style.display = (name.includes(query) || desc.includes(query)) ? '' : 'none';
+  });
+  document.querySelectorAll('.category').forEach(cat => {
+    const visible = Array.from(cat.querySelectorAll('.source-card')).filter(c => c.style.display !== 'none');
+    cat.style.display = visible.length > 0 ? '' : 'none';
+  });
+  document.querySelectorAll('.quick-section').forEach(s => {
+    const visible = Array.from(s.querySelectorAll('.quick-card')).filter(c => c.style.display !== 'none');
+    s.style.display = visible.length > 0 ? '' : 'none';
+  });
+}
+
+// 导航高亮
+const navLinks = document.querySelectorAll('.nav a');
+const sections = document.querySelectorAll('.category, .quick-section');
+
+window.addEventListener('scroll', function() {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 180;
+    if (window.scrollY >= top) current = sec.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+
+  // header hide
+  const header = document.getElementById('header');
+  if (window.scrollY > 100 && window.scrollY > lastScrollY) {
+    header.classList.add('header-hidden');
+  } else {
+    header.classList.remove('header-hidden');
+  }
+  lastScrollY = window.scrollY;
+});
+
+let lastScrollY = 0;
+</script>
+</body>
+</html>
