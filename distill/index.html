@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>蒸馏自己 - AI人格蒸馏</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafafa;
+  --card:#ffffff;
+  --text-primary:#1a1a2e;
+  --text-secondary:#6b7280;
+  --purple-start:#7c3aed;
+  --purple-end:#a855f7;
+  --purple-gradient:linear-gradient(135deg,#7c3aed,#a855f7);
+  --bubble-ai:#f3f4f6;
+  --bubble-user:linear-gradient(135deg,#7c3aed,#a855f7);
+  --shadow:0 2px 12px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.08);
+  --radius:18px;
+  --radius-lg:28px;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  background:var(--bg);
+  color:var(--text-primary);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;min-height:100dvh;
+}
+#app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative;overflow:hidden}
+.state{display:none;width:100%;min-height:100vh;min-height:100dvh}
+.state.active{display:flex;flex-direction:column}
+
+/* Welcome State */
+#state-welcome{padding:60px 24px 40px;text-align:center;align-items:center;justify-content:center;gap:24px}
+.welcome-logo{font-size:13px;font-weight:600;color:#7c3aed;letter-spacing:1px;margin-bottom:-8px}
+.welcome-icon{font-size:72px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.welcome-title{font-size:32px;font-weight:800;background:var(--purple-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.welcome-subtitle{font-size:15px;color:var(--text-secondary);line-height:1.7;max-width:340px}
+.welcome-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.welcome-tag{background:#f3f0ff;color:#7c3aed;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500}
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--purple-gradient);color:#fff;border:none;
+  padding:14px 40px;border-radius:var(--radius-lg);font-size:17px;font-weight:600;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 16px rgba(124,58,237,.3);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-primary:active{transform:scale(.97);box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.btn-outline{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;color:#7c3aed;border:2px solid #7c3aed;
+  padding:14px 40px;border-radius:var(--radius-lg);font-size:17px;font-weight:600;
+  cursor:pointer;transition:transform .2s,background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-outline:active{transform:scale(.97);background:#f3f0ff}
+.btn-text{background:none;border:none;color:var(--text-secondary);font-size:14px;cursor:pointer;padding:8px 16px;-webkit-tap-highlight-color:transparent}
+.btn-text:hover{color:var(--text-primary)}
+
+/* Quiz State */
+#state-quiz{flex-direction:column;height:100vh;height:100dvh}
+#quiz-header{
+  flex-shrink:0;padding:12px 16px;background:var(--card);
+  display:flex;align-items:center;gap:12px;
+  box-shadow:var(--shadow);z-index:10;position:relative;
+}
+.quiz-header-logo{font-size:22px;flex-shrink:0}
+.quiz-header-info{flex:1;min-width:0}
+.quiz-header-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+.quiz-progress-bar{
+  width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;
+}
+.quiz-progress-fill{height:100%;background:var(--purple-gradient);border-radius:3px;transition:width .4s ease}
+.quiz-header-counter{font-size:13px;color:var(--text-secondary);flex-shrink:0;white-space:nowrap}
+#chat-area{
+  flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;
+  -webkit-overflow-scrolling:touch;scroll-behavior:smooth;
+}
+.chat-empty{text-align:center;color:var(--text-secondary);font-size:14px;margin-top:40px}
+.chat-bubble{max-width:85%;padding:12px 16px;border-radius:var(--radius);font-size:15px;line-height:1.6;animation:slideUp .35s ease}
+.chat-bubble.ai{align-self:flex-start;background:var(--bubble-ai);color:var(--text-primary);border-bottom-left-radius:6px}
+.chat-bubble.user{align-self:flex-end;background:var(--bubble-user);color:#fff;border-bottom-right-radius:6px}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.chat-options{display:flex;flex-direction:column;gap:8px;padding:0 4px;animation:slideUp .35s ease .15s both}
+.chat-option{
+  display:block;width:100%;text-align:left;padding:12px 16px;
+  background:var(--card);border:1.5px solid #e5e7eb;border-radius:var(--radius);
+  font-size:14px;color:var(--text-primary);cursor:pointer;
+  transition:border-color .2s,background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.chat-option:active,.chat-option:hover{border-color:#7c3aed;background:#f8f7ff}
+.chat-option .opt-label{font-weight:700;color:#7c3aed;margin-right:8px}
+.chat-distill-btn{margin-top:8px;animation:slideUp .35s ease}
+.chat-distill-btn .btn-primary{width:100%}
+#quiz-input-area{
+  flex-shrink:0;padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));
+  background:var(--card);border-top:1px solid #f0f0f0;
+  display:flex;gap:10px;align-items:center;
+}
+#quiz-input-area.hidden{display:none}
+#quiz-input{
+  flex:1;border:1.5px solid #e5e7eb;border-radius:24px;padding:10px 16px;
+  font-size:15px;outline:none;font-family:inherit;background:var(--bg);
+  transition:border-color .2s;
+}
+#quiz-input:focus{border-color:#7c3aed}
+#quiz-send-btn{
+  width:40px;height:40px;border-radius:50%;border:none;
+  background:var(--purple-gradient);color:#fff;font-size:18px;
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+#quiz-send-btn:active{transform:scale(.93)}
+#quiz-send-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Distilling State */
+#state-distilling{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(250,250,250,.97);z-index:100;
+  align-items:center;justify-content:center;flex-direction:column;gap:32px;
+}
+.distill-spinner{width:64px;height:64px;border:4px solid #e5e7eb;border-top-color:#7c3aed;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.distill-title{font-size:20px;font-weight:700;color:var(--text-primary)}
+.distill-steps{display:flex;flex-direction:column;gap:16px;width:260px}
+.distill-step{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:var(--card);border-radius:var(--radius);font-size:14px;
+  color:var(--text-secondary);transition:all .4s ease;
+  opacity:.4;transform:translateX(-8px);
+}
+.distill-step.active{opacity:1;transform:translateX(0);color:var(--text-primary)}
+.distill-step .step-icon{font-size:20px;flex-shrink:0}
+.distill-step .step-check{display:none;margin-left:auto;color:#10b981;font-size:18px}
+.distill-step.done .step-check{display:block}
+.distill-step.done{opacity:1;transform:translateX(0);color:var(--text-primary);background:#f0fdf6}
+.distill-error{color:#ef4444;font-size:14px;text-align:center;max-width:300px;line-height:1.6}
+.distill-retry{margin-top:12px}
+
+/* Results State */
+#state-results{padding:32px 20px 40px;align-items:center;gap:20px}
+.results-header{text-align:center}
+.results-header .results-icon{font-size:40px}
+.results-header h2{font-size:24px;font-weight:800;margin:8px 0;color:var(--text-primary)}
+.results-badge{display:inline-block;background:#f3f0ff;color:#7c3aed;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;margin-top:4px}
+.results-card{
+  width:100%;background:var(--card);border-radius:var(--radius-lg);padding:24px;
+  box-shadow:var(--shadow-lg);max-height:380px;overflow-y:auto;
+  font-size:14px;line-height:1.8;color:var(--text-primary);white-space:pre-wrap;
+}
+.results-buttons{display:flex;flex-direction:column;gap:12px;width:100%}
+.results-buttons .btn-primary,.results-buttons .btn-outline{width:100%}
+.results-deep{width:100%;text-align:center;margin-top:8px}
+.results-deep p{font-size:12px;color:var(--text-secondary);margin-bottom:10px}
+.results-deep-row{display:flex;gap:8px}
+.results-deep-row input{
+  flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:24px;
+  font-size:14px;outline:none;font-family:inherit;
+}
+.results-deep-row input:focus{border-color:#7c3aed}
+.results-deep-row button{
+  padding:10px 20px;background:var(--purple-gradient);color:#fff;border:none;
+  border-radius:24px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;
+}
+.results-deep-done{font-size:13px;color:#10b981;margin-top:8px;display:none}
+
+/* API Key Modal */
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.5);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.show{display:flex}
+.modal-content{
+  background:var(--card);border-radius:var(--radius-lg);padding:28px 24px;
+  max-width:380px;width:100%;box-shadow:var(--shadow-lg);
+}
+.modal-content h3{font-size:20px;font-weight:700;margin-bottom:8px;color:var(--text-primary)}
+.modal-content p{font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px}
+.modal-content .modal-link{color:#7c3aed;text-decoration:underline;word-break:break-all}
+.modal-input{
+  width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:var(--radius);
+  font-size:14px;outline:none;font-family:inherit;margin-bottom:16px;
+}
+.modal-input:focus{border-color:#7c3aed}
+.modal-content .btn-primary{width:100%}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-secondary);-webkit-tap-highlight-color:transparent}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:#1a1a2e;color:#fff;padding:10px 24px;border-radius:24px;
+  font-size:14px;z-index:300;opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.toast.show{opacity:1}
+
+/* Stats Panel */
+#stats-panel{display:none;padding:24px 20px;max-width:480px;margin:0 auto}
+#stats-panel.active{display:block}
+.stats-header{text-align:center;margin-bottom:28px}
+.stats-header h2{font-size:24px;font-weight:800;color:var(--text-primary)}
+.stats-header p{font-size:13px;color:var(--text-secondary);margin-top:4px}
+.stats-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:24px}
+.stats-card{
+  background:var(--card);border-radius:var(--radius-lg);padding:20px 16px;
+  text-align:center;box-shadow:var(--shadow);
+}
+.stats-card .stat-number{font-size:36px;font-weight:800;background:var(--purple-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stats-card .stat-label{font-size:12px;color:var(--text-secondary);margin-top:4px}
+.stats-ratios{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.stats-ratio{
+  flex:1 1 100px;min-width:100px;background:var(--card);border-radius:var(--radius);padding:14px;
+  text-align:center;box-shadow:var(--shadow);
+}
+.stats-ratio .ratio-value{font-size:20px;font-weight:700;color:#7c3aed}
+.stats-ratio .ratio-label{font-size:12px;color:var(--text-secondary)}
+.stats-loading{text-align:center;color:var(--text-secondary);font-size:14px;padding:40px 0}
+.stats-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stats-actions .btn-outline,.stats-actions .btn-text{font-size:14px;padding:10px 20px}
+
+/* Scrollbar */
+#chat-area::-webkit-scrollbar{width:4px}
+#chat-area::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px}
+.results-card::-webkit-scrollbar{width:4px}
+.results-card::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<!-- State 1: Welcome -->
+<div id="state-welcome" class="state active">
+  <div class="welcome-logo">假装思考ing</div>
+  <div class="welcome-icon">🧬</div>
+  <h1 class="welcome-title">蒸馏自己</h1>
+  <p class="welcome-subtitle">回答20道题，AI帮你提取人格DNA，生成一个会像你一样说话的数字分身提示词</p>
+  <div class="welcome-tags">
+    <span class="welcome-tag">⏱ 约5分钟</span>
+    <span class="welcome-tag">🔒 数据本地处理</span>
+    <span class="welcome-tag">✨ 免费体验</span>
+  </div>
+  <button class="btn-primary" onclick="startQuiz()">开始蒸馏</button>
+</div>
+
+<!-- State 2: Quiz -->
+<div id="state-quiz" class="state">
+  <div id="quiz-header">
+    <span class="quiz-header-logo">🧬</span>
+    <div class="quiz-header-info">
+      <div class="quiz-header-title">蒸馏自己</div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+    </div>
+    <span class="quiz-header-counter" id="quiz-counter">0/20</span>
+  </div>
+  <div id="chat-area"><div class="chat-empty">正在准备问题…</div></div>
+  <div id="quiz-input-area" class="hidden">
+    <input type="text" id="quiz-input" placeholder="输入你的回答…" autocomplete="off">
+    <button id="quiz-send-btn" onclick="submitAnswer()">➤</button>
+  </div>
+</div>
+
+<!-- State 3: Distilling -->
+<div id="state-distilling" class="state">
+  <div class="distill-spinner" id="distill-spinner"></div>
+  <div class="distill-title" id="distill-title">蒸馏中…</div>
+  <div class="distill-steps">
+    <div class="distill-step" id="ds-step-0"><span class="step-icon">📖</span>读取回答数据<span class="step-check">✓</span></div>
+    <div class="distill-step" id="ds-step-1"><span class="step-icon">🔍</span>提取语言特征<span class="step-check">✓</span></div>
+    <div class="distill-step" id="ds-step-2"><span class="step-icon">🧠</span>构建人格画像<span class="step-check">✓</span></div>
+    <div class="distill-step" id="ds-step-3"><span class="step-icon">✨</span>合成数字分身<span class="step-check">✓</span></div>
+  </div>
+  <div class="distill-error" id="distill-error" style="display:none"></div>
+  <button class="btn-primary distill-retry" id="distill-retry-btn" style="display:none" onclick="retryDistill()">重新蒸馏</button>
+</div>
+
+<!-- State 4: Results -->
+<div id="state-results" class="state">
+  <div class="results-header">
+    <div class="results-icon">🧬</div>
+    <h2>你的数字分身</h2>
+    <span class="results-badge">System Prompt</span>
+  </div>
+  <div class="results-card" id="results-content"></div>
+  <div class="results-buttons">
+    <button class="btn-primary" onclick="copyPrompt()">📋 复制提示词</button>
+    <button class="btn-outline" onclick="shareLink()">🔗 分享给朋友</button>
+    <button class="btn-text" onclick="retryDistill()">重新蒸馏</button>
+  </div>
+  <div class="results-deep">
+    <p>想要更深度的人格蒸馏吗？深度版即将开放，感兴趣的话在这留下微信号</p>
+    <div class="results-deep-row">
+      <input type="text" id="deep-wechat-input" placeholder="输入微信号（选填）">
+      <button onclick="submitDeepRegistration()">提交</button>
+    </div>
+    <div class="results-deep-done" id="deep-done">已登记，上线时第一时间通知你！</div>
+  </div>
+</div>
+
+</div>
+
+<!-- API Key Modal -->
+<div class="modal-overlay" id="api-key-modal">
+  <div class="modal-content" style="position:relative">
+    <h3>🔑 输入 API Key</h3>
+    <p>需要 DeepSeek API Key 来驱动蒸馏引擎。你的 Key 只存在浏览器本地，不会上传。去 <a class="modal-link" href="https://platform.deepseek.com" target="_blank" rel="noopener">platform.deepseek.com</a> 免费注册送500万 token。</p>
+    <input type="password" class="modal-input" id="api-key-input" placeholder="sk-..." autocomplete="off">
+    <button class="btn-primary" onclick="saveApiKey()">确认</button>
+  </div>
+</div>
+
+<!-- Stats Panel -->
+<div id="stats-panel">
+  <div class="stats-header">
+    <h2>📊 蒸馏数据面板</h2>
+    <p id="stats-source">数据来源：聚合统计</p>
+  </div>
+  <div class="stats-cards">
+    <div class="stats-card"><div class="stat-number" id="stat-page-view">-</div><div class="stat-label">累计访问</div></div>
+    <div class="stats-card"><div class="stat-number" id="stat-return-visit">-</div><div class="stat-label">7日回访</div></div>
+    <div class="stats-card"><div class="stat-number" id="stat-quiz-start">-</div><div class="stat-label">开始答题</div></div>
+    <div class="stats-card"><div class="stat-number" id="stat-quiz-complete">-</div><div class="stat-label">完成蒸馏</div></div>
+    <div class="stats-card"><div class="stat-number" id="stat-share-click">-</div><div class="stat-label">分享次数</div></div>
+  </div>
+  <div class="stats-ratios">
+    <div class="stats-ratio"><div class="ratio-value" id="stat-complete-rate">-</div><div class="ratio-label">完成率（完成/开始）</div></div>
+    <div class="stats-ratio"><div class="ratio-value" id="stat-share-rate">-</div><div class="ratio-label">分享率（分享/完成）</div></div>
+    <div class="stats-ratio"><div class="ratio-value" id="stat-return-rate">-</div><div class="ratio-label">复访率（回访/访问）</div></div>
+  </div>
+  <div class="stats-loading" id="stats-loading" style="display:none">加载中…</div>
+  <div class="stats-actions">
+    <a href="./" class="btn-text" style="text-decoration:none">🏠 返回首页</a>
+    <button class="btn-outline" onclick="exportStats()">📥 导出数据</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========== Configuration ========== */
+const HARDCODED_API_KEY = 'sk-d0c79d79fecf4d01a0287aef4431b180';
+
+/* ========== Questions Data ========== */
+const questions = [
+  {id:1,category:'表达风格',type:'choice',question:'你平时发微信消息的习惯是啥样的？',options:[
+    {label:'A',text:'喜欢拆成短句一条条发有节奏感'},
+    {label:'B',text:'习惯一大段发完逻辑清晰'},
+    {label:'C',text:'看心情聊开了短句轰炸正经事长文'},
+    {label:'D',text:'基本都是语音打字太累'}
+  ]},
+  {id:2,category:'表达风格',type:'choice',question:'别人如果用三个词形容你的说话风格你觉得会是什么？',options:[
+    {label:'A',text:'幽默轻松没正形'},
+    {label:'B',text:'直接犀利不留情面'},
+    {label:'C',text:'温柔体贴善解人意'},
+    {label:'D',text:'理性严谨就事论事'},
+    {label:'E',text:'其他（自己填）'}
+  ]},
+  {id:3,category:'表达风格',type:'open',question:'有没有什么口头禅或者高频用词？举个例子。',placeholder:'比如：确实、笑死、绷不住了、挺好的……'},
+  {id:4,category:'表达风格',type:'choice',question:'朋友问你一个完全不懂的问题你的第一反应是？',options:[
+    {label:'A',text:'直接说不知道但觉得可能是'},
+    {label:'B',text:'先含糊一下回头偷偷查'},
+    {label:'C',text:'老实承认不懂然后好奇对方为什么关心'},
+    {label:'D',text:'转移话题'}
+  ]},
+  {id:5,category:'思维模式',type:'choice',question:'遇到一个从没见过的复杂问题你的第一反应通常是什么？',options:[
+    {label:'A',text:'先自己闷头想清楚再行动'},
+    {label:'B',text:'立刻找人讨论在碰撞中理清思路'},
+    {label:'C',text:'先搜资料看别人怎么解决的'},
+    {label:'D',text:'拆成小问题一步一步试'}
+  ]},
+  {id:6,category:'思维模式',type:'choice',question:'做重要决定的时候你更相信什么？',options:[
+    {label:'A',text:'直觉 gut feeling 很少骗我'},
+    {label:'B',text:'数据 没数据支撑不敢拍板'},
+    {label:'C',text:'身边信任的人的意见'},
+    {label:'D',text:'都会参考但最后还得自己判断'}
+  ]},
+  {id:7,category:'思维模式',type:'choice',question:'对计划这件事你怎么看？',options:[
+    {label:'A',text:'必须有详细计划才能安心'},
+    {label:'B',text:'大方向有就行细节走一步看一步'},
+    {label:'C',text:'计划赶不上变化基本不做计划'},
+    {label:'D',text:'看事情重要程度重要的才认真计划'}
+  ]},
+  {id:8,category:'思维模式',type:'choice',question:'和别人意见严重分歧的时候你的处理方式是？',options:[
+    {label:'A',text:'坚持自己的立场辩论到底'},
+    {label:'B',text:'表面妥协但内心不服'},
+    {label:'C',text:'先试着理解对方的逻辑再回应'},
+    {label:'D',text:'避免冲突换个话题'}
+  ]},
+  {id:9,category:'价值倾向',type:'choice',question:'你觉得在什么情况下说谎是可以接受的？',options:[
+    {label:'A',text:'为了保护别人的感受'},
+    {label:'B',text:'为了避免不必要的麻烦'},
+    {label:'C',text:'基本不接受 诚实是底线'},
+    {label:'D',text:'看情况没有绝对标准'}
+  ]},
+  {id:10,category:'价值倾向',type:'choice',question:'对权威（老师、老板、专家）你的默认态度是？',options:[
+    {label:'A',text:'尊重但保持独立思考'},
+    {label:'B',text:'先质疑验证过才信'},
+    {label:'C',text:'一般会信任专业判断'},
+    {label:'D',text:'视具体人而定不能一概而论'}
+  ]},
+  {id:11,category:'价值倾向',type:'choice',question:'你做了一件很差的事但没人发现你会？',options:[
+    {label:'A',text:'主动承认'},
+    {label:'B',text:'假装没发生但心里过不去'},
+    {label:'C',text:'完全无所谓'},
+    {label:'D',text:'看事情严重程度'}
+  ]},
+  {id:12,category:'价值倾向',type:'choice',question:'你觉得驱动自己活着的最核心的东西是什么？',options:[
+    {label:'A',text:'想做成一些事留下点什么'},
+    {label:'B',text:'想成为更好的自己'},
+    {label:'C',text:'想体验尽可能多的人生'},
+    {label:'D',text:'说不上来还在找'}
+  ]},
+  {id:13,category:'知识边界',type:'open',question:'你最擅长的领域是什么？能聊到什么深度？',placeholder:'比如：前端开发能讨论框架设计；或者中国近代史能聊到具体事件和人物……'},
+  {id:14,category:'知识边界',type:'open',question:'有没有什么领域你完全不行但大方承认？',placeholder:'比如：数学、做饭、认路……'},
+  {id:15,category:'知识边界',type:'choice',question:'别人最常来找你请教什么问题？',options:[
+    {label:'A',text:'情感人际关系'},
+    {label:'B',text:'学习专业相关'},
+    {label:'C',text:'生活建议决策建议'},
+    {label:'D',text:'技术工具使用'},
+    {label:'E',text:'其他'}
+  ]},
+  {id:16,category:'知识边界',type:'choice',question:'刷手机时什么内容会让你停下来认真看完？',options:[
+    {label:'A',text:'深度长文行业分析'},
+    {label:'B',text:'搞笑段子有趣的故事'},
+    {label:'C',text:'科学科普冷知识'},
+    {label:'D',text:'人物故事经历分享'},
+    {label:'E',text:'其他'}
+  ]},
+  {id:17,category:'社交偏好',type:'open',question:'什么话题会瞬间点燃你让你话特别多？',placeholder:'比如：聊到你喜欢的乐队、某个游戏、某个社会议题……'},
+  {id:18,category:'社交偏好',type:'choice',question:'什么社交场合会让你想立刻消失？',options:[
+    {label:'A',text:'大型陌生人聚会'},
+    {label:'B',text:'被迫当众发言表演'},
+    {label:'C',text:'尬聊无意义应酬'},
+    {label:'D',text:'还好很少有这种场合'}
+  ]},
+  {id:19,category:'社交偏好',type:'choice',question:'在朋友群体中你通常扮演什么角色？',options:[
+    {label:'A',text:'给建议的那个人'},
+    {label:'B',text:'倾听者'},
+    {label:'C',text:'活跃气氛的'},
+    {label:'D',text:'组织者发起人'},
+    {label:'E',text:'观察者不太主动参与'}
+  ]},
+  {id:20,category:'社交偏好',type:'open',question:'最后一道——如果把你的人格浓缩成一句标语会是什么？',placeholder:'自由发挥，一句话定义自己'}
+];
+
+/* ========== State Management ========== */
+let quizState = {currentQuestion:0,answers:[],apiKey:''};
+let isAnimating = false;
+let distillResult = '';
+
+/* ========== DOM Refs ========== */
+function $(id){return document.getElementById(id)}
+const welcomeEl = $('state-welcome');
+const quizEl = $('state-quiz');
+const distillingEl = $('state-distilling');
+const resultsEl = $('state-results');
+const chatArea = $('chat-area');
+const quizInputArea = $('quiz-input-area');
+const quizInput = $('quiz-input');
+const quizSendBtn = $('quiz-send-btn');
+const quizCounter = $('quiz-counter');
+const quizProgressFill = $('quiz-progress-fill');
+const apiKeyModal = $('api-key-modal');
+const apiKeyInput = $('api-key-input');
+const statsPanel = $('stats-panel');
+const toast = $('toast');
+
+let toastTimer;
+
+/* ========== Cookie Helpers ========== */
+function getCookie(name){
+  const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+function setCookie(name,value,days){
+  const d = new Date();
+  d.setTime(d.getTime()+(days*24*60*60*1000));
+  document.cookie = name+'='+encodeURIComponent(value)+';expires='+d.toUTCString()+';path=/';
+}
+
+/* ========== Toast ========== */
+function showToast(msg,duration=2000){
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.classList.add('show');
+  toastTimer = setTimeout(()=>toast.classList.remove('show'),duration);
+}
+
+/* ========== State Switching ========== */
+function switchState(el){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+
+/* ========== Statistics ========== */
+function sendStat(event){
+  const key = 'dseep_stat_'+event;
+  const cur = parseInt(localStorage.getItem(key)||'0');
+  localStorage.setItem(key,(cur+1).toString());
+  fetch('/api/event',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({event})
+  }).catch(()=>{});
+}
+
+function loadAggregatedStats(callback){
+  fetch('/api/stats').then(r=>r.json()).then(data=>{
+    callback(data,true);
+  }).catch(()=>{
+    const data = {};
+    ['page_view','quiz_start','quiz_complete','share_click','return_visit'].forEach(e=>{
+      data['stat_'+e] = parseInt(localStorage.getItem('dseep_stat_'+e)||'0');
+    });
+    callback(data,false);
+  });
+}
+
+/* ========== API Key ========== */
+function getApiKey(){
+  if(HARDCODED_API_KEY)return HARDCODED_API_KEY;
+  return localStorage.getItem('dseep_distill_apikey')||'';
+}
+
+function checkApiKey(callback){
+  quizState.apiKey = getApiKey();
+  if(quizState.apiKey){
+    callback();
+  }else{
+    apiKeyModal.classList.add('show');
+    apiKeyInput.focus();
+    window._apiKeyCallback = callback;
+  }
+}
+
+function saveApiKey(){
+  const key = apiKeyInput.value.trim();
+  if(!key){showToast('请输入 API Key');return;}
+  if(!key.startsWith('sk-')){showToast('API Key 格式不正确，应以 sk- 开头');return;}
+  localStorage.setItem('dseep_distill_apikey',key);
+  quizState.apiKey = key;
+  apiKeyModal.classList.remove('show');
+  apiKeyInput.value = '';
+  if(window._apiKeyCallback){window._apiKeyCallback();window._apiKeyCallback=null}
+}
+
+/* ========== Quiz Logic ========== */
+function startQuiz(){
+  checkApiKey(()=>{
+    sendStat('quiz_start');
+    quizState.currentQuestion = 0;
+    quizState.answers = [];
+    saveProgress();
+    chatArea.innerHTML = '';
+    switchState(quizEl);
+    updateQuizHeader();
+    if(questions[0].type==='choice')quizInputArea.classList.add('hidden');
+    else quizInputArea.classList.remove('hidden');
+    setTimeout(()=>addAIBubble(questions[0]),300);
+    quizInput.value = '';
+    quizInput.focus();
+  });
+}
+
+function updateQuizHeader(){
+  const answered = quizState.answers.length;
+  const current = Math.min(answered+1,questions.length);
+  quizCounter.textContent = current+'/'+questions.length;
+  quizProgressFill.style.width = (answered/questions.length*100)+'%';
+}
+
+function saveProgress(){
+  localStorage.setItem('dseep_distill_progress',JSON.stringify({
+    currentQuestion:quizState.currentQuestion,
+    answers:quizState.answers
+  }));
+}
+
+function addAIBubble(q){
+  if(isAnimating)return;
+  isAnimating = true;
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble ai';
+  bubble.innerHTML = '<span style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px">🤖 第'+q.id+'题 · '+q.category+'</span>'+q.question;
+  chatArea.appendChild(bubble);
+  scrollToBottom();
+  
+  if(q.type==='choice'){
+    setTimeout(()=>{
+      const optsDiv = document.createElement('div');
+      optsDiv.className = 'chat-options';
+      q.options.forEach(opt=>{
+        const btn = document.createElement('button');
+        btn.className = 'chat-option';
+        btn.innerHTML = '<span class="opt-label">'+opt.label+'</span>'+opt.text;
+        btn.addEventListener('click',()=>selectOption(q,opt));
+        optsDiv.appendChild(btn);
+      });
+      chatArea.appendChild(optsDiv);
+      scrollToBottom();
+      isAnimating = false;
+    },250);
+  }else{
+    quizInputArea.classList.remove('hidden');
+    quizInput.placeholder = q.placeholder||'输入你的回答…';
+    quizInput.value = '';
+    setTimeout(()=>{quizInput.focus();isAnimating=false},250);
+  }
+}
+
+function selectOption(q,opt){
+  if(isAnimating)return;
+  isAnimating = true;
+  addUserBubble(opt.label+'. '+opt.text,q,opt.label);
+}
+
+function submitAnswer(){
+  const text = quizInput.value.trim();
+  if(!text)return;
+  if(isAnimating)return;
+  isAnimating = true;
+  quizSendBtn.disabled = true;
+  const q = questions[quizState.currentQuestion];
+  addUserBubble(text,q,text);
+  quizInput.value = '';
+  quizInputArea.classList.add('hidden');
+  quizSendBtn.disabled = false;
+}
+
+function addUserBubble(answerText,q,answerKey){
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble user';
+  bubble.textContent = answerText;
+  chatArea.appendChild(bubble);
+  scrollToBottom();
+
+  quizState.answers.push({q:q.id,category:q.category,question:q.question,answer:answerKey,text:answerText});
+  quizState.currentQuestion++;
+  updateQuizHeader();
+  saveProgress();
+
+  isAnimating = false;
+  setTimeout(()=>{
+    if(quizState.currentQuestion >= questions.length){
+      showDistillButton();
+    }else{
+      const nextQ = questions[quizState.currentQuestion];
+      if(nextQ.type==='choice')quizInputArea.classList.add('hidden');
+      else{quizInputArea.classList.remove('hidden');quizInput.placeholder=nextQ.placeholder||'输入你的回答…';quizInput.value=''}
+      addAIBubble(nextQ);
+      updateQuizHeader();
+    }
+  },400);
+}
+
+function showDistillButton(){
+  const div = document.createElement('div');
+  div.className = 'chat-distill-btn';
+  div.innerHTML = '<button class="btn-primary" onclick="startDistillation()">🔮 开始蒸馏我的数字分身</button>';
+  chatArea.appendChild(div);
+  scrollToBottom();
+}
+
+function scrollToBottom(){
+  requestAnimationFrame(()=>{
+    chatArea.scrollTop = chatArea.scrollHeight;
+  });
+}
+
+/* ========== Distillation ========== */
+function startDistillation(){
+  switchState(distillingEl);
+  $('distill-spinner').style.display = '';
+  $('distill-title').style.display = '';
+  document.querySelectorAll('.distill-step').forEach(s=>{s.style.display='';s.classList.remove('active','done')});
+  $('distill-error').style.display = 'none';
+  $('distill-retry-btn').style.display = 'none';
+
+  let stepIndex = 0;
+  const stepInterval = setInterval(()=>{
+    if(stepIndex>0){
+      document.getElementById('ds-step-'+(stepIndex-1)).classList.add('done');
+    }
+    if(stepIndex<4){
+      document.getElementById('ds-step-'+stepIndex).classList.add('active');
+      stepIndex++;
+    }
+    if(stepIndex>=4){
+      clearInterval(stepInterval);
+      setTimeout(()=>{document.getElementById('ds-step-3').classList.add('done')},1200);
+    }
+  },1200);
+
+  callDeepSeekAPI().then(result=>{
+    clearInterval(stepInterval);
+    document.querySelectorAll('.distill-step').forEach(s=>{s.classList.add('active','done')});
+    distillResult = result;
+    setTimeout(()=>{
+      sendStat('quiz_complete');
+      showResults();
+    },600);
+  }).catch(err=>{
+    clearInterval(stepInterval);
+    $('distill-spinner').style.display = 'none';
+    $('distill-title').style.display = 'none';
+    document.querySelectorAll('.distill-step').forEach(s=>{s.style.display='none'});
+    $('distill-error').style.display = 'block';
+    $('distill-error').textContent = '蒸馏失败：'+err.message;
+    $('distill-retry-btn').style.display = 'inline-flex';
+  });
+}
+
+function retryDistill(){
+  startDistillation();
+}
+
+function buildAnswersText(){
+  return quizState.answers.map(a=>{
+    return 'Q'+a.q+' ['+a.category+'] '+a.question+'\nA: '+a.text;
+  }).join('\n\n');
+}
+
+function buildDistillPrompt(){
+  const answers = buildAnswersText();
+  return '你是一个专业的AI人格蒸馏师。你的任务是根据用户回答的20道性格问题，生成一段System Prompt。任何大语言模型加载这段提示词后，应当能够模拟该用户的对话风格、思维方式和价值倾向。\n\n【用户的问题与回答】\n'+answers+'\n\n【分析维度】\n请从以下五个维度深入分析：1.表达风格（用词偏好、句式长短、语气温度、口头禅特征）2.思维模式（分析问题的默认角度、决策依据、对计划的态度、处理分歧的方式）3.价值倾向（对权威的态度、对诚实的立场、人生驱动力来源）4.知识边界（擅长领域及深度、承认的无知、被请教方向、好奇心偏好）5.社交角色（兴奋话题、不适场合、群体中扮演的角色）\n\n【输出格式】严格按此结构，约400字中文：\n[角色定义] 2-3句概括整体气质和核心特征\n[表达风格] 具体描述说话方式，有口头禅则自然融入\n[知识领域与边界] 擅长什么以及明确的知识边界\n[交互规则] 面对不懂的问题、争论、给建议时的风格\n[对话示例] 3-4轮简短对话展示典型风格\n\n【核心规则】严格基于实际回答生成，不编造未提及特征。输出语气与用户回答高度一致。不包含任何可识别个人身份信息（姓名地名学校公司联系方式）。总字数380-450字。质量目标：陌生人加载后对话3轮能感受到像真人在说话。';
+}
+
+async function callDeepSeekAPI(){
+  const apiKey = getApiKey();
+  if(!apiKey)throw new Error('未设置API Key');
+  const prompt = buildDistillPrompt();
+  const resp = await fetch('https://api.deepseek.com/v1/chat/completions',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+apiKey
+    },
+    body:JSON.stringify({
+      model:'deepseek-chat',
+      messages:[{role:'user',content:prompt}],
+      temperature:0.7,
+      max_tokens:2048,
+      top_p:0.9
+    })
+  });
+  if(!resp.ok){
+    const err = await resp.json().catch(()=>({}));
+    throw new Error(err.error?.message||'API请求失败 ('+resp.status+')');
+  }
+  const data = await resp.json();
+  return data.choices[0].message.content.trim();
+}
+
+/* ========== Results ========== */
+function showResults(){
+  switchState(resultsEl);
+  $('results-content').textContent = distillResult;
+  $('deep-wechat-input').value = '';
+  $('deep-done').style.display = 'none';
+}
+
+function copyPrompt(){
+  navigator.clipboard.writeText(distillResult).then(()=>{
+    showToast('✅ 提示词已复制到剪贴板');
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = distillResult;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ 提示词已复制到剪贴板');
+  });
+}
+
+function shareLink(){
+  sendStat('share_click');
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(()=>{
+    showToast('🔗 链接已复制，分享给朋友吧！');
+  }).catch(()=>{
+    showToast('🔗 链接：'+url);
+  });
+}
+
+function submitDeepRegistration(){
+  const wechat = $('deep-wechat-input').value.trim();
+  if(!wechat){showToast('请输入微信号');return;}
+  fetch('/api/deep-register',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({wechat})
+  }).then(()=>{
+    showToast('✅ 已登记');
+  }).catch(()=>{
+    localStorage.setItem('dseep_deep_wechat',wechat);
+    showToast('✅ 已登记');
+  });
+  $('deep-done').style.display = 'block';
+  $('deep-wechat-input').value = '';
+}
+
+/* ========== Stats Panel ========== */
+function renderStatsPanel(data,isAggregated){
+  $('stats-source').textContent = isAggregated ? '数据来源：全量聚合统计' : '数据来源：本地浏览器数据';
+  $('stat-page-view').textContent = data.stat_page_view||0;
+  $('stat-return-visit').textContent = data.stat_return_visit||0;
+  $('stat-quiz-start').textContent = data.stat_quiz_start||0;
+  $('stat-quiz-complete').textContent = data.stat_quiz_complete||0;
+  $('stat-share-click').textContent = data.stat_share_click||0;
+
+  const pv = data.stat_page_view||0;
+  const rv = data.stat_return_visit||0;
+  const start = data.stat_quiz_start||0;
+  const complete = data.stat_quiz_complete||0;
+  const share = data.stat_share_click||0;
+  $('stat-complete-rate').textContent = start>0?(complete/start*100).toFixed(1)+'%':'--';
+  $('stat-share-rate').textContent = complete>0?(share/complete*100).toFixed(1)+'%':'--';
+  $('stat-return-rate').textContent = pv>0?(rv/pv*100).toFixed(1)+'%':'--';
+}
+
+function exportStats(){
+  const data = {};
+  for(let i=0;i<localStorage.length;i++){
+    const key = localStorage.key(i);
+    if(key.startsWith('dseep_stat_'))data[key]=localStorage.getItem(key);
+  }
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'distill-stats-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📥 数据已导出');
+}
+
+/* ========== Init ========== */
+function init(){
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if(urlParams.has('stats')){
+    document.getElementById('app').style.display = 'none';
+    statsPanel.classList.add('active');
+    loadAggregatedStats(renderStatsPanel);
+    sendStat('page_view');
+    return;
+  }
+
+  sendStat('page_view');
+  if(getCookie('dseep_return')){
+    sendStat('return_visit');
+  }
+  setCookie('dseep_return','1',7);
+
+  const saved = localStorage.getItem('dseep_distill_progress');
+  if(saved){
+    try{
+      const p = JSON.parse(saved);
+      if(p.answers&&p.answers.length>0){
+        quizState = p;
+        switchState(quizEl);
+        chatArea.innerHTML = '';
+        quizState.answers.forEach(a=>{
+          const q = questions.find(qq=>qq.id===a.q);
+          if(q){
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'chat-bubble ai';
+            aiBubble.innerHTML = '<span style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px">🤖 第'+q.id+'题 · '+q.category+'</span>'+q.question;
+            chatArea.appendChild(aiBubble);
+            const userBubble = document.createElement('div');
+            userBubble.className = 'chat-bubble user';
+            userBubble.textContent = a.text;
+            chatArea.appendChild(userBubble);
+          }
+        });
+        updateQuizHeader();
+        if(quizState.currentQuestion < questions.length){
+          const nextQ = questions[quizState.currentQuestion];
+          if(nextQ.type==='choice')quizInputArea.classList.add('hidden');
+          else{quizInputArea.classList.remove('hidden');quizInput.placeholder=nextQ.placeholder||'输入你的回答…'}
+          setTimeout(()=>addAIBubble(nextQ),400);
+          quizInput.value = '';
+        }else{
+          showDistillButton();
+        }
+        scrollToBottom();
+        if(getApiKey()){return}
+      }
+    }catch(e){}
+  }
+
+  checkApiKey(()=>{});
+}
+
+/* ========== Event Listeners ========== */
+quizInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){
+    e.preventDefault();
+    submitAnswer();
+  }
+});
+
+quizInput.addEventListener('input',()=>{
+  quizSendBtn.disabled = !quizInput.value.trim();
+});
+
+document.addEventListener('click',e=>{
+  if(e.target===apiKeyModal){
+    apiKeyModal.classList.remove('show');
+    window._apiKeyCallback = null;
+  }
+});
+
+init();
+</script>
+
+</body>
+</html>
